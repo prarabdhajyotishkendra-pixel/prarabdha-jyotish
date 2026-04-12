@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row align-items-center mb-5">
+    <div class="col-md-7 text-center text-md-start">
+        <h1 class="display-4 fw-bold mb-3">Welcome to Prarabdha Jyotish Kendra</h1>
+        <p class="lead mb-4">Discover the mysteries of your life through ancient Vedic wisdom. Unveil what the stars and
+            your palms hold for your future.</p>
+    </div>
+    <div class="col-md-5 text-center">
+        <!-- Optional hero image can go here -->
+        <h1 style="font-size: 8rem; opacity: 0.5;">ॐ</h1>
+    </div>
+</div>
+
+<h2 class="text-center mb-5">Our Spiritual Services</h2>
+
+<div class="row g-4 align-items-stretch justify-content-center">
+    <!-- Palm Reading Card -->
+    <div class="col-md-6 col-lg-5">
+        <div class="card h-100 p-4 text-center">
+            <h3 class="card-title mt-2 text-white">हस्तरेखा परीक्षण. </h3>
+            <h5 class="text-white mb-3">(Palm Reading)</h5>
+            <div class="card-body">
+                <p class="card-text text-start text-white">Upload an image of your right hand and our experts will analyze the
+                    lines to reveal your destiny, career prospects, health, and relationships.</p>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+                <a href="{% url 'hastarekha' %}" class="btn btn-gold btn-lg w-100">Request Palm Reading</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Horoscope Card -->
+    <div class="col-md-6 col-lg-5">
+        <div class="card h-100 p-4 text-center">
+            <h3 class="card-title mt-2 text-white">संपूर्ण कुंडली</h3>
+            <h5 class="text-white mb-3">(Full Horoscope)</h5>
+            <div class="card-body">
+                <p class="card-text text-start text-white">Provide your accurate birth details to receive a comprehensive analysis
+                    of your birth chart, predicting major life events and planetary alignments.</p>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+                <a href="{% url 'kundali' %}" class="btn btn-gold btn-lg w-100">Request Horoscope</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

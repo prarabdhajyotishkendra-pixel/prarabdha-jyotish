@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card p-5 text-center">
+            <h1 style="font-size: 4rem; color: #28a745; margin-bottom: 20px;">✓</h1>
+            <h2 class="mb-4">Request Submitted Successfully!</h2>
+            <p class="lead mb-4 text-muted">Your request has been received by Prarabdha Jyotish Kendra. Once your payment is verified by our admin, your analysis will begin.</p>
+            <p class="mb-5 border p-3 rounded bg-dark border-secondary">You will be contacted by our team when your comprehensive astrological report is ready.</p>
+            <div>
+                <a href="{% url 'home' %}" class="btn btn-outline-light px-4">Return to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

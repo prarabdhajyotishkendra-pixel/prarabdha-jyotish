@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card p-4">
+            <h2 class="text-center mb-4 text-white">संपूर्ण कुंडली</h2>
+            <p class="text-white text-center mb-4">Please provide your precise birth details below for an accurate
+                astrological reading (सटीक ज्योतिषीय विश्लेषण के लिए कृपया अपने जन्म का सही विवरण नीचे प्रदान करें).</p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label text-white">Full Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-white">Date of Birth</label>
+                        {{ form.dob }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-white">Time of Birth</label>
+                        {{ form.birth_time }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">Place of Birth</label>
+                    {{ form.birth_place }}
+                    <div class="form-text text-white text-opacity-75">Include city, state, and country.</div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-white">Phone Number (Optional)</label>
+                    {{ form.phone }}
+                </div>
+
+                <hr class="border-secondary my-4">
+
+                <div class="text-center mb-4">
+                    <h5 class="mb-3 text-white">Scan Code for Payment</h5>
+                    <!-- Placeholder QR code -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=AstrologyPaymentPlaceholder"
+                        alt="Payment QR Code" class="img-fluid rounded bg-white p-2" style="max-width: 300px;">
+                    <p class="text-white mt-2 small">Scan and pay, then submit. Admin will link your payment via your
+                        details.</p>
+                </div>
+
+                <button type="submit" class="btn btn-gold btn-lg w-100">Submit Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
