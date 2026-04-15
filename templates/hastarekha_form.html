@@ -8,7 +8,8 @@
             <h2 class="text-center mb-4 text-white">हस्तरेखा परीक्षण</h2>
             <p class="text-white text-center mb-4">Please upload a clear image of your <strong
                     class="text-warning">RIGHT HAND</strong> palm only. Fill in your details and pay via the QR code
-                below before submitting.</p>
+                below before submitting.कृपया केवल अपने दाहिने हाथ की स्पष्ट तस्वीर अपलोड करें। अपने विवरण भरें और सबमिट
+                करने से पहले नीचे दिए गए QR कोड के माध्यम से भुगतान करें।</p>
 
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -42,8 +43,8 @@
                 <div class="text-center mb-4">
                     <h5 class="mb-3 text-white">Scan Code for Payment</h5>
                     <!-- Static placeholder QR code -->
-                    <img src="{% static 'img/payment_qr.png' %}"
-                        alt="Payment QR Code" class="img-fluid rounded bg-white p-2" style="max-width: 200px;">
+                    <img src="{% static 'img/payment_qr.png' %}" alt="Payment QR Code"
+                        class="img-fluid rounded bg-white p-2" style="max-width: 200px;">
                     <p class="text-white mt-2 small">Scan and pay, then submit. Admin will link your payment via your
                         phone number.</p>
                 </div>
