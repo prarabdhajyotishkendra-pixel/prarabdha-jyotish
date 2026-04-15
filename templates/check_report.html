@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card p-4">
+            <h2 class="text-center mb-4 text-white">Check Your Report</h2>
+            <p class="text-white text-center mb-4">Enter the phone number you used during the request submission to check its status and view the astrology report.</p>
+
+            <form method="post" action="{% url 'check_report' %}">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" name="phone" class="form-control" placeholder="Enter your Phone Number" value="{{ phone|default:'' }}" required>
+                    <button class="btn btn-gold" type="submit">Check Status</button>
+                </div>
+            </form>
+
+            {% if error %}
+            <div class="alert alert-danger mt-3">{{ error }}</div>
+            {% endif %}
+
+            {% if searched %}
+                <hr class="border-secondary my-4">
+                <h4 class="text-gold mb-3">Results for: {{ phone }}</h4>
+
+                {% if palm_requests or kundali_requests %}
+                    {% for p in palm_requests %}
+                    <div class="card bg-dark mb-3 border-secondary">
+                        <div class="card-body text-white">
+                            <h5 class="card-title text-gold">Palm Reading Request</h5>
+                            <p class="mb-1"><strong>Submitted:</strong> {{ p.created_at|date:"F j, Y" }}</p>
+                            <p class="mb-1"><strong>Name:</strong> {{ p.name }}</p>
+                            <p class="mb-1"><strong>Payment Status:</strong> 
+                            {% if p.payment_status %}<span class="badge bg-success">Paid</span>{% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+                            </p>
+                            <p class="mb-2"><strong>Status:</strong> 
+                                {% if p.status == 'Completed' %}<span class="badge bg-success">Completed</span>{% else %}<span class="badge bg-secondary">Pending Analysis</span>{% endif %}
+                            </p>
+                            
+                            {% if p.status == 'Completed' and p.report %}
+                            <div class="mt-3 p-3 bg-dark border rounded border-warning">
+                                <h6 class="text-gold">Astrology Report:</h6>
+                                <p style="white-space: pre-wrap;">{{ p.report }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% for k in kundali_requests %}
+                    <div class="card bg-dark mb-3 border-secondary">
+                        <div class="card-body text-white">
+                            <h5 class="card-title text-gold">Horoscope Request</h5>
+                            <p class="mb-1"><strong>Submitted:</strong> {{ k.created_at|date:"F j, Y" }}</p>
+                            <p class="mb-1"><strong>Name:</strong> {{ k.name }}</p>
+                            <p class="mb-1"><strong>Payment Status:</strong> 
+                            {% if k.payment_status %}<span class="badge bg-success">Paid</span>{% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+                            </p>
+                            <p class="mb-2"><strong>Status:</strong> 
+                                {% if k.status == 'Completed' %}<span class="badge bg-success">Completed</span>{% else %}<span class="badge bg-secondary">Pending Analysis</span>{% endif %}
+                            </p>
+                            
+                            {% if k.status == 'Completed' and k.report %}
+                            <div class="mt-3 p-3 bg-dark border rounded border-warning">
+                                <h6 class="text-gold">Astrology Report:</h6>
+                                <p style="white-space: pre-wrap;">{{ k.report }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning mt-3">No requests found linked to this phone number. Please verify the number you provided.</div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
