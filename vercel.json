@@ -1,4 +1,5 @@
 {
+    "name": "prarabdha-jyotish",
     "builds": [
         {
             "src": "index.py",
