@@ -1,8 +1,10 @@
-django
+Django>=5.0,<6.0
+dj-database-url
+psycopg2-binary
+python-dotenv
 whitenoise
 pillow
-psycopg2-binary
-dj-database-url
-python-dotenv
+google-generativeai
+gunicorn
 cloudinary
-django-cloudinary-storage
+dj3-cloudinary-storage

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="chat-container">
+
+    <div class="chat-header">🔮 AstroGPT AI</div>
+
+    <div class="chat-box">
+        <div class="msg bot">Ask your destiny questions...</div>
+    </div>
+
+    <div class="chat-input">
+        <input type="text" placeholder="Type your question...">
+        <button>Send</button>
+    </div>
+
+</div>
+
+{% endblock %}

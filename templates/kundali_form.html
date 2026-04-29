@@ -2,59 +2,437 @@
 {% load static %}
 
 {% block content %}
-<div class="row justify-content-center">
+<canvas id="bg-canvas"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1;"></canvas>
+
+<canvas id="magic-cursor-canvas"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999;"></canvas>
+
+<style>
+    /* Tighter, modern staggering delays */
+    .delay-1 {
+        animation-delay: 0.1s !important;
+    }
+
+    .delay-2 {
+        animation-delay: 0.2s !important;
+    }
+
+    .delay-3 {
+        animation-delay: 0.3s !important;
+    }
+
+    .delay-4 {
+        animation-delay: 0.4s !important;
+    }
+
+    .delay-5 {
+        animation-delay: 0.5s !important;
+    }
+
+    .delay-6 {
+        animation-delay: 0.6s !important;
+    }
+
+    /* Modern Agency Text Reveal (Blur + Slide + Scale) */
+    @keyframes orconixReveal {
+        0% {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            filter: blur(8px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+    }
+
+    .animate-entry {
+        opacity: 0;
+        animation-name: orconixReveal;
+        animation-duration: 1s;
+        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        animation-fill-mode: forwards;
+        will-change: transform, opacity, filter;
+    }
+
+    /* Input fields styling for premium look */
+    .form-control,
+    .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        box-shadow: none;
+    }
+
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .text-gold {
+        color: #D4AF37 !important;
+    }
+
+    /* CUSTOM PAYMENT BUTTONS */
+    .btn-upi {
+        background: linear-gradient(45deg, #11998e, #38ef7d);
+        color: #000;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        transition: 0.3s;
+        padding: 14px;
+        font-size: 1.1rem;
+        box-shadow: 0 5px 15px rgba(56, 239, 125, 0.2);
+    }
+
+    .btn-upi:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(56, 239, 125, 0.4);
+        color: #000;
+    }
+
+    .btn-whatsapp {
+        background: #25D366;
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        transition: 0.3s;
+        padding: 14px;
+        font-size: 1.1rem;
+    }
+
+    .btn-whatsapp:hover {
+        background: #1ebe57;
+        transform: translateY(-3px);
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    .digit-box {
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid #D4AF37;
+        color: #D4AF37;
+        font-size: 1.5rem;
+        text-align: center;
+        letter-spacing: 5px;
+        font-weight: bold;
+    }
+
+    .digit-box:focus {
+        border-color: #fff;
+        color: #fff;
+    }
+</style>
+
+<div class="row justify-content-center" style="position: relative; z-index: 1;">
     <div class="col-md-8 col-lg-6">
-        <div class="card p-4">
-            <h2 class="text-center mb-4 text-white">संपूर्ण कुंडली</h2>
-            <p class="text-white text-center mb-4">Please provide your precise birth details below for an accurate
-                astrological reading (सटीक ज्योतिषीय विश्लेषण के लिए कृपया अपने जन्म का सही विवरण नीचे प्रदान करें).</p>
+        <div class="glass-card p-4 text-start animate-entry">
+            <h2 class="text-center mb-4 text-white animate-entry delay-1">संपूर्ण कुंडली</h2>
+            <p class="text-white-50 text-center mb-4 animate-entry delay-1">
+                Provide birth details and complete the <strong class="text-gold">₹751</strong> payment to submit your
+                request.
+            </p>
 
-            <form method="post">
+            <form id="astro-form" method="post">
                 {% csrf_token %}
-
-                <div class="mb-3">
-                    <label class="form-label text-white">Full Name</label>
+                <div class="mb-3 animate-entry delay-2">
+                    <label class="text-white fw-bold">Full Name</label>
                     {{ form.name }}
                 </div>
 
-                <div class="row">
+                <div class="row animate-entry delay-3">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label text-white">Date of Birth</label>
+                        <label class="text-white fw-bold">Date of Birth</label>
                         {{ form.dob }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label text-white">Time of Birth</label>
-                        <div class="input-group">
-                            {{ form.birth_time }}
+                        <label class="text-white fw-bold">Birth Time</label>
+                        {{ form.birth_time }}
+                    </div>
+                </div>
+
+                <div class="mb-3 animate-entry delay-4">
+                    <label class="text-white fw-bold">Place of Birth</label>
+                    {{ form.birth_place }}
+                </div>
+
+                <div class="mb-4 animate-entry delay-4">
+                    <label class="text-white fw-bold">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+
+                <hr class="border-secondary my-4 animate-entry delay-5">
+
+                <div class="text-center mb-4 p-4 rounded animate-entry delay-5"
+                    style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3);">
+                    <h4 class="mb-3 text-white">Consultation Fee: <span class="text-gold fw-bold">₹751</span></h4>
+
+                    <img src="https://raw.githubusercontent.com/prarabdhajyotishkendra-pixel/prarabdha-jyotish/main/static/images/qr.png"
+                        alt="Payment QR" class="img-fluid shadow"
+                        style="max-width: 200px; border: 2px solid #D4AF37; border-radius: 10px; background: white; padding: 10px; display: block; margin: 15px auto;">
+
+                    <div class="mt-3 mb-3 text-white-50" style="font-size: 14px;">
+                        <p class="mb-1">UPI ID: <strong class="text-warning"
+                                style="letter-spacing: 1px;">6267357802@ybl</strong></p>
+                        <p class="mb-0">PhonePe / GPay: <strong class="text-warning" style="letter-spacing: 1px;">+91
+                                6267357802</strong></p>
+                    </div>
+
+                    <button type="button" id="pay-btn" class="btn btn-upi w-100 mb-2 mt-2"
+                        onclick="triggerPaymentFlow()">
+                        <i class="fa-solid fa-mobile-screen-button me-2"></i> Pay ₹751 Now
+                    </button>
+                    <small class="text-white-50 d-block" id="pay-hint">(Opens GPay, PhonePe, Paytm
+                        automatically)</small>
+
+                    <div id="verification-box"
+                        style="display: none; margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(212, 175, 55, 0.3); animation: orconixReveal 0.5s ease forwards;">
+
+                        <div class="form-check d-flex justify-content-center align-items-center mb-3 text-start">
+                            <input class="form-check-input me-2" type="checkbox" id="payment-done-check"
+                                onchange="toggleTxnField()"
+                                style="background-color: transparent; border-color: #D4AF37; cursor: pointer; width: 20px; height: 20px;">
+                            <label class="form-check-label text-white" for="payment-done-check"
+                                style="cursor: pointer;">
+                                I've Completed Payment ✅
+                            </label>
+                        </div>
+
+                        <div id="digit-input-container" style="display: none; transition: 0.3s;">
+                            <p class="text-white-50 mb-2" style="font-size: 13px;">Enter Last 4 digits of Transaction ID
+                            </p>
+                            <input type="text" id="txn-digits" class="form-control digit-box mb-4 mx-auto"
+                                style="width: 150px;" maxlength="4" placeholder="XXXX"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateSubmit();">
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label text-white">Place of Birth</label>
-                    {{ form.birth_place }}
-                    <div class="form-text text-white text-opacity-75">Include city, state, and country.</div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label text-white">Phone Number (Optional)</label>
-                    {{ form.phone }}
-                </div>
-
-                <hr class="border-secondary my-4">
-
-                <div class="text-center mb-4">
-                    <h5 class="mb-3 text-white">Scan Code for Payment</h5>
-                    <!-- Static placeholder QR code -->
-                    <img src="{% static 'img/payment_qr.png' %}" alt="Payment QR Code"
-                        class="img-fluid rounded bg-white p-2" style="max-width: 300px;">
-                    <p class="text-white mt-2 small">Scan and pay, then submit. Admin will link your payment via your
-                        details.</p>
-                </div>
-
-                <button type="submit" class="btn btn-gold btn-lg w-100">Submit Request</button>
+                <button type="submit" id="submit-btn" class="btn btn-whatsapp w-100 animate-entry delay-6"
+                    style="opacity: 0.4; cursor: not-allowed; transition: 0.3s;" disabled>
+                    <i class="fa-brands fa-whatsapp me-2"></i> Submit to WhatsApp
+                </button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    // --- SMART PAYMENT FLOW LOGIC ---
+    function triggerPaymentFlow() {
+        const upiId = "6267357802@ybl";
+        const payeeName = "Prarabdha Jyotish Kendra";
+        const amount = "751";
+        const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+
+        // Mobile vs Desktop Detection
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        if (isMobile) {
+            window.location.href = upiLink; // Opens payment app
+        } else {
+            alert("Desktop Detected! 🖥️\n\nPlease scan the QR code above with your mobile phone to complete the payment.");
+        }
+
+        // Change button UI
+        const payBtn = document.getElementById('pay-btn');
+        payBtn.innerHTML = '<i class="fa-solid fa-check-double me-2"></i> Payment Initiated';
+        payBtn.style.background = 'rgba(255,255,255,0.1)';
+        payBtn.style.color = '#fff';
+        document.getElementById('pay-hint').style.display = 'none';
+
+        // Reveal Verification Box
+        document.getElementById('verification-box').style.display = 'block';
+    }
+
+    function toggleDigitInput() {
+        const isChecked = document.getElementById('payment-done-check').checked;
+        const digitContainer = document.getElementById('digit-input-container');
+        digitContainer.style.display = isChecked ? 'block' : 'none';
+
+        if (!isChecked) document.getElementById('txn-digits').value = '';
+        validateSubmit();
+    }
+
+    function validateSubmit() {
+        const isChecked = document.getElementById('payment-done-check').checked;
+        const digits = document.getElementById('txn-digits').value;
+        const submitBtn = document.getElementById('submit-btn');
+
+        // Exact 4 digits required
+        if (isChecked && digits.length === 4) {
+            submitBtn.removeAttribute('disabled');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+        } else {
+            submitBtn.setAttribute('disabled', 'true');
+            submitBtn.style.opacity = '0.4';
+            submitBtn.style.cursor = 'not-allowed';
+        }
+    }
+
+    // --- WHATSAPP SUBMIT LOGIC (UPDATED FORMAT) ---
+    document.getElementById('astro-form').addEventListener('submit', function (event) {
+        const name = document.querySelector('[name="name"]')?.value || 'N/A';
+        const dob = document.querySelector('[name="dob"]')?.value || 'N/A';
+        const time = document.querySelector('[name="birth_time"]')?.value || 'N/A';
+        const place = document.querySelector('[name="birth_place"]')?.value || 'N/A';
+        const phone = document.querySelector('[name="phone"]')?.value || 'N/A';
+        const txnDigits = document.getElementById('txn-digits').value || '0000';
+
+        const message = `Namaste Prarabdha Jyotish 🙏\n\n*Full Kundali Request*\nName: ${name}\nDOB: ${dob}\nTime: ${time}\nPlace: ${place}\nPhone: ${phone}\nService: Sampoorna Kundali\nAmount: ₹751\nTransaction Last 4 digits: ${txnDigits}\n\nPayment completed.\nPlease confirm.`;
+
+        // Updated WhatsApp Number
+        const whatsappUrl = 'https://wa.me/916267357802?text=' + encodeURIComponent(message);
+        window.open(whatsappUrl, '_blank');
+    });
+
+    // --- GOLDEN CURSOR EFFECT ---
+    (function () {
+        const cursorCanvas = document.getElementById('magic-cursor-canvas');
+        if (!cursorCanvas) return;
+        const cursorCtx = cursorCanvas.getContext('2d');
+        cursorCanvas.width = window.innerWidth;
+        cursorCanvas.height = window.innerHeight;
+
+        let cursorParticlesArray = [];
+
+        window.addEventListener('resize', function () {
+            cursorCanvas.width = window.innerWidth;
+            cursorCanvas.height = window.innerHeight;
+        });
+
+        const cursorMouse = { x: undefined, y: undefined };
+        window.addEventListener('mousemove', function (event) {
+            cursorMouse.x = event.x;
+            cursorMouse.y = event.y;
+            for (let i = 0; i < 3; i++) {
+                cursorParticlesArray.push(new CursorParticle());
+            }
+        });
+
+        class CursorParticle {
+            constructor() {
+                this.x = cursorMouse.x;
+                this.y = cursorMouse.y;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = 'rgba(230, 184, 54, 0.9)'; // Golden
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.05;
+            }
+            draw() {
+                cursorCtx.fillStyle = this.color;
+                cursorCtx.shadowBlur = 10;
+                cursorCtx.shadowColor = 'rgba(230, 184, 54, 1)';
+                cursorCtx.beginPath();
+                cursorCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                cursorCtx.fill();
+            }
+        }
+
+        function animateCursor() {
+            cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+            for (let i = 0; i < cursorParticlesArray.length; i++) {
+                cursorParticlesArray[i].update();
+                cursorParticlesArray[i].draw();
+                if (cursorParticlesArray[i].size <= 0.2) {
+                    cursorParticlesArray.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+    })();
+
+    // --- PEARL WHITE BACKGROUND MESH EFFECT ---
+    (function () {
+        const bgCanvas = document.getElementById('bg-canvas');
+        if (!bgCanvas) return;
+        const bgCtx = bgCanvas.getContext('2d');
+        bgCanvas.width = window.innerWidth;
+        bgCanvas.height = window.innerHeight;
+
+        let bgParticlesArray = [];
+        const numberOfParticles = 60;
+        const connectionDistance = 140;
+
+        window.addEventListener('resize', function () {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            initBgParticles();
+        });
+
+        class BgParticle {
+            constructor() {
+                this.x = Math.random() * bgCanvas.width;
+                this.y = Math.random() * bgCanvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = 'rgba(245, 245, 245, 0.8)'; // Pearl White
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > bgCanvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > bgCanvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+            draw() {
+                bgCtx.fillStyle = this.color;
+                bgCtx.shadowBlur = 12;
+                bgCtx.shadowColor = 'rgba(255, 255, 255, 0.7)';
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fill();
+            }
+        }
+
+        function initBgParticles() {
+            bgParticlesArray = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                bgParticlesArray.push(new BgParticle());
+            }
+        }
+
+        function animateBg() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            for (let i = 0; i < bgParticlesArray.length; i++) {
+                bgParticlesArray[i].update();
+                bgParticlesArray[i].draw();
+
+                for (let j = i; j < bgParticlesArray.length; j++) {
+                    const dx = bgParticlesArray[i].x - bgParticlesArray[j].x;
+                    const dy = bgParticlesArray[i].y - bgParticlesArray[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < connectionDistance) {
+                        const opacity = 1 - (distance / connectionDistance);
+                        bgCtx.strokeStyle = `rgba(245, 245, 245, ${opacity * 0.3})`;
+                        bgCtx.lineWidth = 0.8;
+                        bgCtx.shadowBlur = 5;
+                        bgCtx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                        bgCtx.beginPath();
+                        bgCtx.moveTo(bgParticlesArray[i].x, bgParticlesArray[i].y);
+                        bgCtx.lineTo(bgParticlesArray[j].x, bgParticlesArray[j].y);
+                        bgCtx.stroke();
+                        bgCtx.shadowBlur = 0;
+                    }
+                }
+            }
+            requestAnimationFrame(animateBg);
+        }
+
+        initBgParticles();
+        animateBg();
+    })();
+</script>
 {% endblock %}

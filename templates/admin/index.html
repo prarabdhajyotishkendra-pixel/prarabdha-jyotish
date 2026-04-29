@@ -1,79 +1,373 @@
-{% extends "admin/index.html" %}
-{% load i18n static astro_tags %}
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* 1. GLOBAL THEME OVERRIDE */
+    body {
+        background-color: #0B0C10 !important;
+        color: #E0E0E0 !important;
+        font-family: 'Outfit', sans-serif !important;
+        overflow-x: hidden;
+        margin: 0;
+    }
+
+    #bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    #magic-cursor-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 99999;
+    }
+
+    #content {
+        position: relative;
+        z-index: 1;
+        padding: 20px 40px !important;
+        background: transparent !important;
+    }
+
+    /* 2. PREMIUM DASHBOARD CARDS (2x2) */
+    .dashboard-wrapper {
+        max-width: 1200px;
+        margin: 20px auto;
+    }
+
+    .dashboard-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .premium-glass-card {
+        background: rgba(26, 36, 46, 0.8) !important;
+        border: 1px solid rgba(212, 175, 55, 0.3) !important;
+        border-radius: 25px;
+        padding: 40px;
+        text-align: center;
+        color: white;
+        transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        cursor: pointer;
+        backdrop-filter: blur(20px);
+        text-decoration: none !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .premium-glass-card:hover {
+        transform: translateY(-10px);
+        border-color: #D4AF37 !important;
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+    }
+
+    .premium-glass-card i {
+        font-size: 3.2rem;
+        color: #D4AF37;
+        margin-bottom: 20px;
+        text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .premium-glass-card h3 {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        color: #aaa;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+    }
+
+    .premium-glass-card h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* 3. MODALS (High-End Analytics) */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 100000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.92);
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(12px);
+    }
+
+    .modal-box {
+        background: #0f111a;
+        border: 2px solid #D4AF37;
+        border-radius: 30px;
+        padding: 45px;
+        width: 95%;
+        max-width: 1000px;
+        position: relative;
+        color: white;
+        box-shadow: 0 0 60px rgba(212, 175, 55, 0.2);
+    }
+
+    .close-modal {
+        position: absolute;
+        right: 25px;
+        top: 20px;
+        font-size: 35px;
+        cursor: pointer;
+        color: #888;
+        transition: 0.3s;
+    }
+
+    .close-modal:hover {
+        color: #D4AF37;
+        transform: rotate(90deg);
+    }
+
+    /* Metrics Grid (6 Columns) */
+    .metrics-row {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+
+    .metric-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .metric-item span {
+        font-size: 11px;
+        color: #888;
+        text-transform: uppercase;
+    }
+
+    .metric-item h4 {
+        font-size: 18px;
+        color: #D4AF37;
+        margin: 5px 0 0 0;
+    }
+
+    #content-related {
+        width: 100% !important;
+        margin: 30px 0 0 0 !important;
+        background: rgba(26, 36, 46, 0.7) !important;
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 20px;
+        padding: 25px;
+        float: none !important;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block usertools %}
+<div id="user-tools" style="display: flex; align-items: center; font-family: 'Outfit', sans-serif;">
+    <span style="color: white; font-size: 15px; margin-right: 20px;">
+        Welcome, <strong style="color: #D4AF37; text-transform: uppercase;">ADMIN_PRARABDHA</strong>
+    </span>
+    <a href="/" title="View Site"
+        style="color: #D4AF37; font-size: 1.3rem; margin: 0 12px; transition: 0.3s; text-decoration: none;"
+        onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#D4AF37'"><i
+            class="fa-solid fa-house"></i></a>
+    <a href="{% url 'admin:password_change' %}" title="Change Password"
+        style="color: #D4AF37; font-size: 1.3rem; margin: 0 12px; transition: 0.3s; text-decoration: none;"
+        onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#D4AF37'"><i
+            class="fa-solid fa-key"></i></a>
+    <a href="{% url 'admin:logout' %}" title="Log Out"
+        style="color: #ff4d4d; font-size: 1.3rem; margin: 0 12px; transition: 0.3s; text-decoration: none;"
+        onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ff4d4d'"><i
+            class="fa-solid fa-power-off"></i></a>
+</div>
+{% endblock %}
 
 {% block content %}
-<div id="content-main">
-    {% get_dashboard_stats as stats %}
+<canvas id="bg-canvas"></canvas>
+<canvas id="magic-cursor-canvas"></canvas>
 
-    <div class="app-astrology module">
-        <table
-            style="width: 100%; border-collapse: collapse; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <caption
-                style="text-align: left; padding: 10px; background-color: #904641; color: white; font-weight: bold; font-size: 14px;">
-                Astrology Requests Dashboard
-            </caption>
-            <thead>
-                <tr>
-                    <th
-                        style="padding: 12px; text-align: left; background-color: #f8f8f8; border-bottom: 1px solid #ddd;">
-                        Service Type</th>
-                    <th
-                        style="padding: 12px; text-align: center; background-color: #f8f8f8; border-bottom: 1px solid #ddd;">
-                        Today</th>
-                    <th
-                        style="padding: 12px; text-align: center; background-color: #f8f8f8; border-bottom: 1px solid #ddd;">
-                        This Month</th>
-                    <th
-                        style="padding: 12px; text-align: center; background-color: #f8f8f8; border-bottom: 1px solid #ddd;">
-                        Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background-color: white;">
-                    <td style="padding: 12px; border-bottom: 1px solid #eee;"><strong><a
-                                href="{% url 'admin:astrology_palmreading_changelist' %}"
-                                style="color: #c5d6df;">Hastarekha Parikshan</a></strong></td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 16px; color: #444;">
-                        {{ stats.palm_today }}</td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 16px; color: #444;">
-                        {{ stats.palm_month }}</td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 16px; font-weight: bold; color: #222;">
-                        {{ stats.palm_total }}</td>
-                </tr>
-                <tr style="background-color: white;">
-                    <td style="padding: 12px; border-bottom: 1px solid #eee;"><strong><a
-                                href="{% url 'admin:astrology_kundali_changelist' %}" style="color: #c5d6df;">Sampurna
-                                Kundali Parikshan</a></strong></td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 16px; color: #444;">
-                        {{ stats.kundali_today }}</td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 16px; color: #444;">
-                        {{ stats.kundali_month }}</td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 16px; font-weight: bold; color: #222;">
-                        {{ stats.kundali_total }}</td>
-                </tr>
-                <tr style="background-color: #f0f0f0;">
-                    <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: right;"><strong>Overall
-                            Requests</strong></td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd; font-size: 18px; font-weight: bold; color: #417690;">
-                        {{ stats.overall_today }}</td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd; font-size: 18px; font-weight: bold; color: #417690;">
-                        -</td>
-                    <td
-                        style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd; font-size: 18px; font-weight: bold; color: #417690;">
-                        {{ stats.overall_total }}</td>
-                </tr>
-            </tbody>
-        </table>
+<div class="dashboard-wrapper">
+    <div class="dashboard-grid">
+        <div class="premium-glass-card" onclick="toggleModal('revenueDashboard')">
+            <i class="fa-solid fa-chart-line"></i>
+            <h3>Total Revenue Overview</h3>
+            <h2 id="ui-total-revenue">₹0</h2>
+            <small style="color:#D4AF37;">Click to view Analytics</small>
+        </div>
+
+        <div class="premium-glass-card" onclick="toggleModal('todayBreakdown')">
+            <i class="fa-solid fa-coins"></i>
+            <h3>Today's Income</h3>
+            <h2 id="ui-today-revenue">₹{{ today_income|default:"0" }}</h2>
+            <small style="color:#198754;">Click for Breakdown</small>
+        </div>
+
+        <a href="/admin/astrology/palmreading/" class="premium-glass-card">
+            <i class="fa-solid fa-hand-sparkles"></i>
+            <h3>Palm Readings</h3>
+            <h2 id="ui-palm-count">{{ total_p|default:"0" }}</h2>
+        </a>
+
+        <a href="/admin/astrology/kundali/" class="premium-glass-card">
+            <i class="fa-solid fa-scroll"></i>
+            <h3>Kundali Requests</h3>
+            <h2 id="ui-kundali-count">{{ total_k|default:"0" }}</h2>
+        </a>
     </div>
 
-    {{ block.super }}
+    <div id="actions-anchor"></div>
+    <div style="opacity: 0.8; margin-top: 40px;">{{ block.super }}</div>
 </div>
+
+<div id="revenueDashboard" class="modal-overlay">
+    <div class="modal-box">
+        <span class="close-modal" onclick="toggleModal('revenueDashboard')">&times;</span>
+        <h2 style="color: #D4AF37; margin-bottom: 25px;"><i class="fa-solid fa-gem me-2"></i> Revenue Intelligence</h2>
+
+        <div class="metrics-row">
+            <div class="metric-item"><span>1 Day</span>
+                <h4>₹{{ today_income|default:"0" }}</h4>
+            </div>
+            <div class="metric-item"><span>1 Week</span>
+                <h4>₹{{ week_income|default:"0" }}</h4>
+            </div>
+            <div class="metric-item"><span>1 Month</span>
+                <h4>₹{{ month_income|default:"0" }}</h4>
+            </div>
+            <div class="metric-item"><span>1 Year</span>
+                <h4>₹{{ year_income|default:"0" }}</h4>
+            </div>
+            <div class="metric-item"><span>5 Years</span>
+                <h4>₹{{ five_year_income|default:"0" }}</h4>
+            </div>
+            <div class="metric-item" style="border-color:#D4AF37;"><span>10 Years</span>
+                <h4 id="ui-10yr-revenue">₹0</h4>
+            </div>
+        </div>
+
+        <div style="height: 350px; width: 100%;"><canvas id="mainRevChart"></canvas></div>
+    </div>
+</div>
+
+<div id="todayBreakdown" class="modal-overlay">
+    <div class="modal-box" style="max-width: 500px;">
+        <span class="close-modal" onclick="toggleModal('todayBreakdown')">&times;</span>
+        <h2 style="color: #D4AF37;"><i class="fa-solid fa-receipt me-2"></i> Today's Report</h2>
+        <hr style="border-color: rgba(255,255,255,0.1);">
+        <div style="display:flex; justify-content:space-between; font-size:18px; margin: 15px 0;">
+            <span>Kundali Revenue:</span><strong style="color: #D4AF37;">₹{{ today_k_income|default:"0" }}</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:18px; margin: 15px 0;">
+            <span>Palm Income:</span><strong style="color: #D4AF37;">₹{{ today_p_income|default:"0" }}</strong>
+        </div>
+        <div
+            style="display:flex; justify-content:space-between; border-top:1px solid #D4AF37; padding-top:20px; margin-top:20px;">
+            <span style="font-size:24px;">Total Today:</span>
+            <strong style="font-size:24px; color:#198754;">₹{{ today_income|default:"0" }}</strong>
+        </div>
+    </div>
+</div>
+
+<div id="rev-data" data-labels='{{ chart_data_labels|safe }}' data-palm='{{ chart_data_palm|safe }}'
+    data-kundali='{{ chart_data_kundali|safe }}' style="display:none;"></div>
+
+<script>
+    // --- SMART AUTO-CALCULATION ENGINE (Overrides missing Django data) ---
+    document.addEventListener("DOMContentLoaded", function () {
+        // Read raw counts
+        const palmCount = parseInt(document.getElementById('ui-palm-count').innerText) || 0;
+        const kundaliCount = parseInt(document.getElementById('ui-kundali-count').innerText) || 0;
+
+        // Exact Prices you mentioned
+        const palmPrice = 251;
+        const kundaliPrice = 751;
+
+        // Auto Calculate
+        const totalRevenue = (palmCount * palmPrice) + (kundaliCount * kundaliPrice);
+
+        // Inject into Dashboard automatically
+        document.getElementById('ui-total-revenue').innerText = "₹" + totalRevenue;
+        document.getElementById('ui-10yr-revenue').innerText = "₹" + totalRevenue;
+
+        // Append Actions Block
+        const actions = document.getElementById('content-related');
+        const target = document.getElementById('actions-anchor');
+        if (actions && target) target.appendChild(actions);
+    });
+
+    // --- MESH & CURSOR EFFECTS ---
+    (function () {
+        const c = document.getElementById('bg-canvas'); const ctx = c.getContext('2d');
+        c.width = window.innerWidth; c.height = window.innerHeight;
+        let p = []; for (let i = 0; i < 85; i++) { p.push({ x: Math.random() * c.width, y: Math.random() * c.height, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, s: Math.random() * 1.5 + 0.5 }); }
+        function draw() { ctx.clearRect(0, 0, c.width, c.height); ctx.fillStyle = 'rgba(255,255,255,0.4)'; p.forEach(dot => { dot.x += dot.vx; dot.y += dot.vy; if (dot.x < 0 || dot.x > c.width) dot.vx *= -1; if (dot.y < 0 || dot.y > c.height) dot.vy *= -1; ctx.beginPath(); ctx.arc(dot.x, dot.y, dot.s, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(draw); } draw();
+    })();
+
+    (function () {
+        const c = document.getElementById('magic-cursor-canvas'); const ctx = c.getContext('2d');
+        c.width = window.innerWidth; c.height = window.innerHeight;
+        let dots = []; window.addEventListener('mousemove', (e) => { for (let i = 0; i < 3; i++)dots.push({ x: e.clientX, y: e.clientY, s: Math.random() * 3 + 1, v: (Math.random() - 0.5) * 1.5, o: 1 }); });
+        function animate() { ctx.clearRect(0, 0, c.width, c.height); dots.forEach((d, i) => { d.x += d.v; d.y += d.v; d.o -= 0.02; if (d.o <= 0) dots.splice(i, 1); else { ctx.fillStyle = `rgba(212, 175, 55, ${d.o})`; ctx.beginPath(); ctx.arc(d.x, d.y, d.s, 0, Math.PI * 2); ctx.fill(); } }); requestAnimationFrame(animate); } animate();
+    })();
+
+    // --- MODAL & CHARTING ENGINE ---
+    function toggleModal(id) {
+        const modal = document.getElementById(id);
+        if (modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        } else {
+            modal.style.display = 'flex';
+            if (id === 'revenueDashboard') {
+                setTimeout(createRevChart, 100);
+            }
+        }
+    }
+
+    function createRevChart() {
+        const store = document.getElementById('rev-data');
+        const labels = JSON.parse(store.getAttribute('data-labels') || '["1 Day","1 Week","1 Month","1 Year","5 Years","10 Years"]');
+        const palm = JSON.parse(store.getAttribute('data-palm') || '[0,0,0,0,0,0]');
+        const kundali = JSON.parse(store.getAttribute('data-kundali') || '[0,0,0,0,0,0]');
+
+        const canvas = document.getElementById('mainRevChart');
+        if (!canvas) return;
+        if (window.currentChart) window.currentChart.destroy();
+
+        window.currentChart = new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Kundali Income', data: kundali, borderColor: '#D4AF37', backgroundColor: 'rgba(212,175,55,0.1)', fill: true, tension: 0.4, borderWidth: 3 },
+                    { label: 'Palm Income', data: palm, borderColor: '#198754', backgroundColor: 'rgba(25,135,84,0.1)', fill: true, tension: 0.4, borderWidth: 3 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#fff', font: { family: 'Outfit' } } } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', callback: v => '₹' + v } },
+                    x: { ticks: { color: '#888' } }
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}

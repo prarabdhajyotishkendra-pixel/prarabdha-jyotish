@@ -1,15 +1,30 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="row justify-content-center mt-5">
     <div class="col-md-8 col-lg-6">
-        <div class="card p-5 text-center">
-            <h1 style="font-size: 4rem; color: #28a745; margin-bottom: 20px;">✓</h1>
-            <h2 class="mb-4">Request Submitted Successfully!</h2>
-            <p class="lead mb-4 text-muted">Your request has been received by Prarabdha Jyotish Kendra. Once your payment is verified by our admin, your analysis will begin.</p>
-            <p class="mb-5 border p-3 rounded bg-dark border-secondary">You will be contacted by our team when your comprehensive astrological report is ready.</p>
+        <div class="glass-card p-5 text-center">
+            <h1 style="font-size: 5rem; margin-bottom: 20px;"><i class="fa-solid fa-check-circle text-gold"></i></h1>
+            <h2 class="mb-4 text-white">Request & Payment Submitted!</h2>
+
+            <div class="mb-4 border p-3 rounded text-start"
+                style="background: rgba(212,175,55,0.1); border-color: rgba(212,175,55,0.3) !important;">
+                <h5 class="text-gold mb-2"><i class="fa-brands fa-whatsapp"></i> Important Next Step:</h5>
+                <p class="text-light mb-0">A WhatsApp chat has automatically opened in a new tab. <strong>Please hit
+                        'Send' in that chat</strong> so our team receives your exact details and payment UTR number. We
+                    will start your analysis immediately after verifying your transaction.</p>
+            </div>
+
+            <div class="mt-4 mb-5 text-center">
+                <p class="text-light border p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
+                    <i class="fa-solid fa-clock-rotate-left text-gold me-2"></i> Your astrological report will be
+                    delivered directly to your WhatsApp soon.
+                </p>
+            </div>
+
             <div>
-                <a href="{% url 'home' %}" class="btn btn-outline-light px-4">Return to Home</a>
+                <a href="/" class="btn btn-gold px-4 py-2"><i class="fa-solid fa-house me-2"></i> Return to Home</a>
             </div>
         </div>
     </div>

@@ -1,0 +1,133 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* GLOBAL DARK THEME */
+    body {
+        background: #0B0C10 !important;
+        color: #E0E0E0 !important;
+        font-family: 'Outfit', sans-serif !important;
+        overflow-x: hidden;
+        margin: 0;
+    }
+
+    /* EFFECTS LAYERS */
+    #bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    #magic-cursor-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 99999;
+    }
+
+    /* PREMIUM NAVBAR OVERRIDE */
+    #header {
+        background: rgba(20, 20, 25, 0.95) !important;
+        border-bottom: 2px solid #D4AF37 !important;
+        backdrop-filter: blur(15px);
+        padding: 15px 40px !important;
+    }
+
+    #branding h1 {
+        color: #D4AF37 !important;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 20px !important;
+    }
+
+    #user-tools {
+        color: #fff !important;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    #user-tools strong {
+        color: #D4AF37 !important;
+    }
+
+    #user-tools a {
+        color: #fff !important;
+        text-decoration: none;
+        margin: 0 10px;
+        transition: 0.3s;
+    }
+
+    #user-tools a:hover {
+        color: #D4AF37 !important;
+    }
+
+    /* CONTENT TABLES (Reports List Fix) */
+    #content {
+        position: relative;
+        z-index: 1;
+        background: transparent !important;
+        padding: 20px 40px !important;
+    }
+
+    .module,
+    .results,
+    #changelist {
+        background: rgba(26, 36, 46, 0.8) !important;
+        backdrop-filter: blur(10px);
+        border-radius: 15px !important;
+        border: 1px solid rgba(212, 175, 55, 0.2) !important;
+        overflow: hidden;
+    }
+
+    table thead th {
+        background: rgba(212, 175, 55, 0.1) !important;
+        color: #D4AF37 !important;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+
+    .row1 {
+        background: rgba(255, 255, 255, 0.02) !important;
+    }
+
+    .row2 {
+        background: rgba(255, 255, 255, 0.05) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<canvas id="bg-canvas"></canvas>
+<canvas id="magic-cursor-canvas"></canvas>
+{{ block.super }}
+
+<script>
+    /* 1. PEARL MESH EFFECT */
+    (function () {
+        const c = document.getElementById('bg-canvas'); const ctx = c.getContext('2d');
+        c.width = window.innerWidth; c.height = window.innerHeight;
+        let p = []; for (let i = 0; i < 85; i++) p.push({ x: Math.random() * c.width, y: Math.random() * c.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, s: Math.random() * 1.5 + 0.5 });
+        function draw() { ctx.clearRect(0, 0, c.width, c.height); ctx.fillStyle = 'rgba(255,255,255,0.35)'; p.forEach(dot => { dot.x += dot.vx; dot.y += dot.vy; if (dot.x < 0 || dot.x > c.width) dot.vx *= -1; if (dot.y < 0 || dot.y > c.height) dot.vy *= -1; ctx.beginPath(); ctx.arc(dot.x, dot.y, dot.s, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(draw); } draw();
+    })();
+
+    /* 2. GOLDEN MAGIC CURSOR */
+    (function () {
+        const c = document.getElementById('magic-cursor-canvas'); const ctx = c.getContext('2d');
+        c.width = window.innerWidth; c.height = window.innerHeight;
+        let dots = []; window.addEventListener('mousemove', (e) => { for (let i = 0; i < 3; i++)dots.push({ x: e.clientX, y: e.clientY, s: Math.random() * 3 + 1, v: (Math.random() - 0.5) * 1.5, o: 1 }); });
+        function animate() { ctx.clearRect(0, 0, c.width, c.height); dots.forEach((d, i) => { d.x += d.v; d.y += d.v; d.o -= 0.02; if (d.o <= 0) dots.splice(i, 1); else { ctx.fillStyle = `rgba(212,175,55,${d.o})`; ctx.beginPath(); ctx.arc(d.x, d.y, d.s, 0, Math.PI * 2); ctx.fill(); } }); requestAnimationFrame(animate); } animate();
+    })();
+</script>
+{% endblock %}

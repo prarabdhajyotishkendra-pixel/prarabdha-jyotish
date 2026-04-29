@@ -5,42 +5,37 @@
 <canvas id="bg-canvas"
     style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1;"></canvas>
 
+<canvas id="magic-cursor-canvas"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999;"></canvas>
+
 <style>
     /* Tighter, modern staggering delays */
     .delay-1 {
-        animation-delay: 0.15s !important;
+        animation-delay: 0.1s !important;
     }
 
     .delay-2 {
-        animation-delay: 0.3s !important;
+        animation-delay: 0.2s !important;
     }
 
     .delay-3 {
-        animation-delay: 0.45s !important;
+        animation-delay: 0.3s !important;
     }
 
     .delay-4 {
-        animation-delay: 0.6s !important;
+        animation-delay: 0.4s !important;
     }
 
     .delay-5 {
-        animation-delay: 0.75s !important;
+        animation-delay: 0.5s !important;
     }
 
-    .delay-6 {
-        animation-delay: 0.9s !important;
-    }
-
-    .delay-7 {
-        animation-delay: 1.05s !important;
-    }
-
-    /* Modern Agency Text Reveal (Blur + Slide + Scale) */
+    /* Modern Agency Text Reveal */
     @keyframes orconixReveal {
         0% {
             opacity: 0;
-            transform: translateY(40px) scale(0.98);
-            filter: blur(10px);
+            transform: translateY(30px) scale(0.98);
+            filter: blur(8px);
         }
 
         100% {
@@ -53,135 +48,69 @@
     .animate-entry {
         opacity: 0;
         animation-name: orconixReveal;
-        animation-duration: 1.2s;
-        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-        animation-fill-mode: forwards;
-        will-change: transform, opacity, filter;
-    }
-
-    /* Cards Reveal Animation */
-    @keyframes orconixCard {
-        0% {
-            opacity: 0;
-            transform: translateY(50px);
-            filter: blur(8px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-            filter: blur(0);
-        }
-    }
-
-    .animate-card {
-        opacity: 0;
-        animation-name: orconixCard;
         animation-duration: 1s;
         animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
         animation-fill-mode: forwards;
         will-change: transform, opacity, filter;
     }
-
-    /* ********************************************* */
-    /* NEW: LOGO GLOW BREATHE EFFECT (Fade In/Fade Out) */
-    /* ********************************************* */
-    .magical-logo-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    @keyframes glowBreathe {
-
-        0%,
-        100% {
-            filter: drop-shadow(0 0 10px rgba(230, 184, 54, 0.3));
-            transform: scale(1);
-        }
-
-        50% {
-            filter: drop-shadow(0 0 35px rgba(230, 184, 54, 0.9));
-            transform: scale(1.02);
-            /* slight breath in size */
-        }
-    }
-
-    .magical-logo {
-        /* This ensures the image uses the pulsing drop-shadow */
-        animation: glowBreathe 4s ease-in-out infinite;
-        /* Start pulsing *after* the initial page entry animation finishes (approx 1.6s) */
-        animation-delay: 1.6s;
-        will-change: filter, transform;
-    }
 </style>
 
-<div class="container hero-section">
-    <div class="row align-items-center w-100">
-        <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
-            <h1 class="hero-title animate-entry">Discover Your <br><span class="text-gold">True Destiny</span></h1>
+<div class="container py-5 mt-4" style="position: relative; z-index: 1;">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="glass-card text-center p-5 animate-entry">
+                <i class="fa-solid fa-envelope-open-text text-gold mb-4 animate-entry delay-1"
+                    style="font-size: 3rem;"></i>
+                <h2 class="text-white fw-bold mb-3 animate-entry delay-1" style="font-family: 'Outfit', sans-serif;">
+                    Contact Us</h2>
+                <p class="text-white-50 mb-4 animate-entry delay-2">We are here to guide you through the wisdom of the
+                    stars. Feel free to reach out to us for any inquiries, technical support, or personalized
+                    astrological assistance.</p>
 
-            <p class="hero-subtitle ms-lg-0 mx-auto animate-entry delay-1">Connect with expert Vedic astrologers and
-                advanced AI to unlock the
-                mysteries of your life, career, and relationships.</p>
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show text-start animate-entry"
+                    role="alert" style="background: rgba(26, 26, 36, 0.9); border: 1px solid #D4AF37; color: white;">
+                    <i class="fa-solid fa-circle-info text-gold me-2"></i> {{ message }}
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
 
-            <div class="mt-4 animate-entry delay-2">
-                <a href="/chat/" class="btn-gold me-2"><i class="fa-solid fa-robot me-2"></i> Try AstroGPT</a>
-                <a href="/kundali/" class="btn btn-outline-light rounded-pill px-4"
-                    style="border: 1px solid rgba(255,255,255,0.2);"><i class="fa-solid fa-scroll me-2"></i> Get
-                    Kundali</a>
-            </div>
-        </div>
+                <form method="POST" action="{% url 'contact' %}" class="text-start mt-4">
+                    {% csrf_token %}
 
-        <div class="col-lg-6 text-center animate-entry delay-3">
-            <div class="magical-logo-container">
-                <img src="{% static 'images/logo.png' %}" alt="Prarabdha Jyotish Logo" class="magical-logo">
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="mb-3 animate-entry delay-3">
+                        <label for="user_email" class="form-label text-gold">Your Email Address</label>
+                        <input type="email" class="form-control text-white" id="user_email" name="user_email" required
+                            placeholder="example@gmail.com"
+                            style="background: rgba(26, 26, 36, 0.8); border: 1px solid rgba(212, 175, 55, 0.3);">
+                    </div>
 
-<div class="container services-container">
-    <div class="text-center mb-5 animate-entry delay-4">
-        <h2 class="text-gold">Our Premium Services</h2>
-    </div>
+                    <div class="mb-4 animate-entry delay-4">
+                        <label for="message" class="form-label text-gold">Your Message</label>
+                        <textarea class="form-control text-white" id="message" name="message" rows="5" required
+                            placeholder="How can we guide you today?"
+                            style="background: rgba(26, 26, 36, 0.8); border: 1px solid rgba(212, 175, 55, 0.3); resize: none;"></textarea>
+                    </div>
 
-    <div class="row g-4 justify-content-center">
-        <div class="col-md-4 animate-card delay-5">
-            <div class="glass-card">
-                <i class="fa-solid fa-hand-sparkles card-icon"></i>
-                <h3>Palm Reading</h3>
-                <p>Upload an image of your hand for a detailed analysis of your life, heart, and destiny lines.</p>
-                <a href="/hastarekha/" class="btn-gold">Request Analysis</a>
-            </div>
-        </div>
-
-        <div class="col-md-4 animate-card delay-6">
-            <div class="glass-card">
-                <i class="fa-solid fa-scroll card-icon"></i>
-                <h3>Full Kundali</h3>
-                <p>Enter your exact birth details for a comprehensive birth chart and future prediction report.</p>
-                <a href="/kundali/" class="btn-gold">Generate Chart</a>
-            </div>
-        </div>
-
-        <div class="col-md-4 animate-card delay-7">
-            <div class="glass-card">
-                <i class="fa-solid fa-robot card-icon"></i>
-                <h3>AI Astrologer</h3>
-                <p>Chat instantly with our advanced AI trained on ancient Vedic scriptures for immediate answers.</p>
-                <a href="/chat/" class="btn-gold">Chat Now</a>
+                    <div class="text-center animate-entry delay-5">
+                        <button type="submit" class="btn btn-gold px-4 py-2 mt-2 fw-bold w-100">
+                            <i class="fa-solid fa-paper-plane me-2"></i> Send Message
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
-<canvas id="magic-cursor-canvas"
-    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999;"></canvas>
 
 <script>
-    // 1. Existing Golden Cursor Effect
+    // --- Golden Cursor Effect ---
     (function () {
         const cursorCanvas = document.getElementById('magic-cursor-canvas');
+        if (!cursorCanvas) return;
         const cursorCtx = cursorCanvas.getContext('2d');
         cursorCanvas.width = window.innerWidth;
         cursorCanvas.height = window.innerHeight;
@@ -197,9 +126,7 @@
         window.addEventListener('mousemove', function (event) {
             cursorMouse.x = event.x;
             cursorMouse.y = event.y;
-            for (let i = 0; i < 3; i++) {
-                cursorParticlesArray.push(new CursorParticle());
-            }
+            for (let i = 0; i < 3; i++) cursorParticlesArray.push(new CursorParticle());
         });
 
         class CursorParticle {
@@ -209,7 +136,7 @@
                 this.size = Math.random() * 3 + 1;
                 this.speedX = Math.random() * 2 - 1;
                 this.speedY = Math.random() * 2 - 1;
-                this.color = 'rgba(230, 184, 54, 0.9)'; // Golden
+                this.color = 'rgba(230, 184, 54, 0.9)';
             }
             update() {
                 this.x += this.speedX;
@@ -241,9 +168,10 @@
         animateCursor();
     })();
 
-    // 2. PEARL WHITE Background Mesh Effect
+    // --- Pearl White Background Mesh Effect ---
     (function () {
         const bgCanvas = document.getElementById('bg-canvas');
+        if (!bgCanvas) return;
         const bgCtx = bgCanvas.getContext('2d');
         bgCanvas.width = window.innerWidth;
         bgCanvas.height = window.innerHeight;
@@ -265,7 +193,7 @@
                 this.size = Math.random() * 1.5 + 0.5;
                 this.speedX = Math.random() * 1 - 0.5;
                 this.speedY = Math.random() * 1 - 0.5;
-                this.color = 'rgba(245, 245, 245, 0.8)'; // Pearl White
+                this.color = 'rgba(245, 245, 245, 0.8)';
             }
             update() {
                 this.x += this.speedX;
@@ -285,9 +213,7 @@
 
         function initBgParticles() {
             bgParticlesArray = [];
-            for (let i = 0; i < numberOfParticles; i++) {
-                bgParticlesArray.push(new BgParticle());
-            }
+            for (let i = 0; i < numberOfParticles; i++) bgParticlesArray.push(new BgParticle());
         }
 
         function animateBg() {
@@ -316,7 +242,6 @@
             }
             requestAnimationFrame(animateBg);
         }
-
         initBgParticles();
         animateBg();
     })();

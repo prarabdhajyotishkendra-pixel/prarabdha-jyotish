@@ -1,0 +1,97 @@
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: 'Segoe UI', sans-serif;
+    background:#000;
+    color:white;
+}
+
+/* FULL BACKGROUND */
+.app-bg{
+    min-height:100vh;
+    background: radial-gradient(circle at top,#0b0b1a,#000);
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    border-bottom:1px solid gold;
+    background:rgba(0,0,0,0.8);
+}
+
+.brand{
+    color:gold;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.nav-links a{
+    color:white;
+    margin-left:20px;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:gold;
+}
+
+/* PAGE WRAPPER (IMPORTANT FIX GAP) */
+.page{
+    padding:0;
+    margin:0;
+}
+
+/* HERO SECTION */
+.hero{
+    height:90vh;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:60px;
+}
+
+/* LEFT TEXT */
+.hero h1{
+    font-size:55px;
+    color:gold;
+}
+
+.hero p{
+    color:#ccc;
+    margin-top:10px;
+}
+
+/* LOGO RIGHT */
+.hero img{
+    width:260px;
+    filter:drop-shadow(0 0 20px gold);
+    animation:float 3s infinite;
+}
+
+/* CARDS */
+.card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid gold;
+    padding:20px;
+    border-radius:15px;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+/* ANIMATION */
+@keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+}

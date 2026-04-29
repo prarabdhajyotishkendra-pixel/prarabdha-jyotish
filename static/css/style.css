@@ -1,0 +1,264 @@
+/* GLOBAL THEME */
+:root {
+    --bg-dark: #0B0C10;
+    --gold-primary: #D4AF37;
+    --gold-hover: #F3E5AB;
+    --text-light: #E0E0E0;
+    --text-white: #FFFFFF;
+}
+
+body.bg-dark-theme {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-font {
+    font-family: 'Playfair Display', serif;
+}
+
+.text-gold {
+    color: var(--gold-primary) !important;
+}
+
+/* NAVBAR */
+.premium-navbar {
+    background: rgba(11, 12, 16, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    transition: all 0.3s ease;
+}
+
+.brand-font {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-links-custom .nav-link {
+    color: var(--text-light);
+    font-weight: 500;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.nav-links-custom .nav-link:hover {
+    color: var(--gold-primary);
+}
+
+.user-icon-gold {
+    color: var(--text-light);
+    border: 2px solid var(--gold-primary);
+    border-radius: 50%;
+    padding: 2px;
+    transition: all 0.3s ease;
+}
+
+.user-icon-gold:hover {
+    color: var(--gold-primary);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+/* PAGE WRAPPER */
+.page-content {
+    padding-top: 80px; /* offset for fixed navbar */
+    min-height: 100vh;
+}
+
+/* CENTER HERO SECTION */
+.hero-section {
+    min-height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 15px;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #A0A0A0;
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+}
+
+/* MAGICAL LOGO */
+.magical-logo-container {
+    margin: 30px 0;
+    position: relative;
+}
+
+.magical-logo {
+    width: 350px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    /* Soft pulsating golden glowing drop-shadow */
+    filter: drop-shadow(0 0 40px rgba(212, 175, 55, 0.4));
+}
+
+/* SERVICE CARDS (GLASSMORPHISM) */
+.services-container {
+    padding: 60px 20px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 40px 30px;
+    text-align: center;
+    height: 100%;
+    transition: all 0.4s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.card-icon {
+    font-size: 3rem;
+    color: var(--gold-primary);
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+}
+
+.glass-card h3 {
+    color: var(--text-white);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.glass-card p {
+    color: #A0A0A0;
+    margin-bottom: 25px;
+}
+
+/* FORMS */
+.form-control, input, select, textarea {
+    background-color: rgba(26, 26, 36, 0.8) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+.form-control:focus, input:focus, select:focus, textarea:focus {
+    background-color: rgba(35, 35, 48, 0.9) !important;
+    border-color: #D4AF37 !important;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5) !important;
+    color: white !important;
+}
+
+/* BUTTONS */
+.btn-gold {
+    background-color: var(--gold-primary);
+    color: var(--bg-dark);
+    font-weight: 600;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 25px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-gold:hover {
+    background-color: var(--gold-hover);
+    color: var(--bg-dark);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   NEW ENTRANCE ANIMATIONS & EFFECTS
+   ========================================= */
+
+/* 1. PAGE LOAD ENTRANCE ANIMATIONS */
+
+/* Keyframes for Fade In & Slide Up */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Keyframes for simple Fade In (Navbar) */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Apply to Navbar */
+.premium-navbar {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+/* Apply to Hero Section Text */
+.hero-title {
+    opacity: 0; /* Prevents showing before animation starts */
+    animation: fadeInUp 1s ease-out 0.2s forwards;
+}
+
+.hero-subtitle {
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 0.4s forwards;
+}
+
+/* Apply to Service Cards (Staggered) */
+.glass-card {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Using nth-child on the grid columns to stagger the delay */
+.col-md-4:nth-child(1) .glass-card {
+    animation-delay: 0.6s;
+}
+.col-md-4:nth-child(2) .glass-card {
+    animation-delay: 0.8s;
+}
+.col-md-4:nth-child(3) .glass-card {
+    animation-delay: 1.0s;
+}
+
+/* 2. BUTTON CLICK & HOVER EFFECTS */
+
+/* Enhanced Hover for Gold Buttons */
+.btn-gold:hover {
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.6), 0 0 10px rgba(212, 175, 55, 0.4) inset !important;
+    transform: translateY(-3px) !important;
+}
+
+/* Active (Click) State for Gold Buttons */
+.btn-gold:active {
+    transform: scale(0.95) translateY(0) !important;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4) !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Active (Click) State for Glass Cards */
+.glass-card:active {
+    transform: scale(0.98) !important;
+    border-color: rgba(212, 175, 55, 0.8) !important;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3) !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+}
