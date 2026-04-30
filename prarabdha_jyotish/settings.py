@@ -19,24 +19,31 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-jewmul5#u^@501qdobr_+x&_sn=g$!6==-dvb%t5o5e+0l@#7b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     ".vercel.app",
     ".vercel.com",
+    "prarabdha-jyotish.vercel.app",
     "*"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://prarabdha-jyotish.vercel.app",
+    "https://*.vercel.app"
 ]
 
 # Application definition
 INSTALLED_APPS = [
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'cloudinary',
     'astrology',
@@ -72,19 +79,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'prarabdha_jyotish.wsgi.application'
 
-# Database
+# Database Connection for Vercel/Supabase
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=0
+    )
 }
-
-# Serverless environments like Vercel should ideally use conn_max_age=0 
-# to avoid connection limits when scaling up quickly.
-db_from_env = dj_database_url.config(conn_max_age=0)
-if db_from_env:
-    DATABASES['default'].update(db_from_env)
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
@@ -102,7 +103,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 WHITENOISE_MANIFEST_STRICT = False
 
 # Media files
