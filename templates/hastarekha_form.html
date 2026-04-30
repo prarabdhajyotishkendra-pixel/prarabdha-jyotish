@@ -323,10 +323,11 @@
                     style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3);">
                     <h4 class="mb-3 text-white">To Pay: <span id="display-amount" class="text-gold fw-bold">₹251</span></h4>
 
-                    <img src="https://raw.githubusercontent.com/prarabdhajyotishkendra-pixel/prarabdha-jyotish/main/static/images/qr.png"
-                        alt="Payment QR" class="img-fluid shadow"
-                        style="max-width: 200px; border: 2px solid #D4AF37; border-radius: 10px; background: white; padding: 10px; display: block; margin: 15px auto;">
-
+                    <!-- FIXED QR CODE PATH -->
+                    <img src="{% static 'images/qr.png' %}"
+                         alt="Payment QR" class="img-fluid shadow"
+                         style="max-width: 200px; border: 2px solid #D4AF37; border-radius: 10px; background: white; padding: 10px; display: block; margin: 15px auto;">
+                    
                     <div class="mt-3 mb-3 text-white-50" style="font-size: 14px;">
                         <p class="mb-1">UPI ID: <strong class="text-warning"
                                 style="letter-spacing: 1px;">6267357802@ybl</strong></p>
@@ -377,7 +378,7 @@
     })();
 
     // --- AI PALM SCANNER LOGIC ---
-    document.getElementById('palm-image-input')?.addEventListener('change', function(e) {
+    document.getElementById('id_image')?.addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
             const scanBox = document.getElementById('ai-scan-box');
             const logsBox = document.getElementById('scan-logs');
