@@ -112,25 +112,66 @@
         box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
     }
 
-    .digit-box {
-        background: rgba(0, 0, 0, 0.3);
-        border: 2px solid #D4AF37;
-        color: #D4AF37;
-        font-size: 1.5rem;
-        text-align: center;
-        letter-spacing: 5px;
-        font-weight: bold;
+    /* TIERED PRICING CSS */
+    .tier-label {
+        display: block;
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        position: relative;
+    }
+    .tier-label:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+    .tier-radio:checked + .tier-label {
+        background: rgba(212, 175, 55, 0.1);
+        border-color: #D4AF37;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+    .tier-radio {
+        display: none;
+    }
+    .best-value-tag {
+        position: absolute;
+        top: -12px;
+        right: 15px;
+        background: #D4AF37;
+        color: #0B0C10;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
     }
 
-    .digit-box:focus {
-        border-color: #fff;
-        color: #fff;
+    @keyframes flipIn {
+        0% { transform: perspective(1000px) rotateY(-90deg); opacity: 0; }
+        100% { transform: perspective(1000px) rotateY(0deg); opacity: 1; }
     }
 </style>
+
+<!-- Blessing Card Popup Modal -->
+<div id="success-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(11,12,16,0.95); z-index: 999999; align-items: center; justify-content: center; flex-direction: column; backdrop-filter: blur(10px);">
+    <div class="blessing-card text-center p-5" style="background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(0,0,0,0.8)); border: 2px solid #D4AF37; border-radius: 20px; box-shadow: 0 0 30px rgba(212,175,55,0.3); animation: flipIn 0.8s ease forwards; max-width: 90%; transform-style: preserve-3d;">
+        <div style="font-size: 4rem; color: #25D366; margin-bottom: 15px;">✅</div>
+        <h3 class="text-white mb-3" style="font-weight: 700;">Payment Confirmed!</h3>
+        <h4 class="text-gold mb-4" style="font-weight: bold; line-height: 1.5;">भगवान आपकी मनोकामना पूर्ण करें 🕉️</h4>
+        <p class="text-white-50 mt-3" style="font-size: 14px;"><i class="fa-solid fa-spinner fa-spin me-2 text-gold"></i> Redirecting to WhatsApp...</p>
+    </div>
+</div>
 
 <div class="row justify-content-center" style="position: relative; z-index: 1;">
     <div class="col-md-8 col-lg-6">
         <div class="glass-card p-4 text-start animate-entry">
+            
+            <div class="alert alert-warning text-center animate-entry delay-1" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.5); color: #D4AF37; font-weight: 500; border-radius: 8px; padding: 10px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(212,175,55,0.1);">
+                🔥 Hurry! Only <span id="slots-left" class="fw-bold" style="font-size: 1.2rem; background: #D4AF37; color: #0B0C10; padding: 2px 8px; border-radius: 4px; margin: 0 5px;">3</span> consultation slots remaining today.
+            </div>
+
             <h2 class="text-center mb-4 text-white animate-entry delay-1">संपूर्ण कुंडली</h2>
             <p class="text-white-50 text-center mb-4 animate-entry delay-1">
                 Provide birth details and complete the <strong class="text-gold">₹751</strong> payment to submit your
@@ -167,9 +208,47 @@
 
                 <hr class="border-secondary my-4 animate-entry delay-5">
 
+                <div class="mb-4 text-start animate-entry delay-5">
+                    <h5 class="text-white mb-3 fw-bold">Select Consultation Package:</h5>
+
+                    <input type="radio" name="package" id="tier-basic" class="tier-radio" value="251" data-name="Basic Palm Reading" onchange="updatePaymentAmount()">
+                    <label for="tier-basic" class="tier-label">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong class="text-white d-block" style="font-size: 1.1rem;">Basic</strong>
+                                <span class="text-white-50" style="font-size: 0.9rem;">Palm Reading</span>
+                            </div>
+                            <strong class="text-gold fs-5">₹251</strong>
+                        </div>
+                    </label>
+
+                    <input type="radio" name="package" id="tier-popular" class="tier-radio" value="501" data-name="Palm + Kundali" checked onchange="updatePaymentAmount()">
+                    <label for="tier-popular" class="tier-label">
+                        <div class="best-value-tag">MOST POPULAR</div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong class="text-white d-block" style="font-size: 1.1rem;">Popular</strong>
+                                <span class="text-white-50" style="font-size: 0.9rem;">Palm + Kundali Analysis</span>
+                            </div>
+                            <strong class="text-gold fs-5">₹501</strong>
+                        </div>
+                    </label>
+
+                    <input type="radio" name="package" id="tier-premium" class="tier-radio" value="1101" data-name="Complete Video Consultation" onchange="updatePaymentAmount()">
+                    <label for="tier-premium" class="tier-label mb-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong class="text-white d-block" style="font-size: 1.1rem;">Premium</strong>
+                                <span class="text-white-50" style="font-size: 0.9rem;">Complete Video Consultation</span>
+                            </div>
+                            <strong class="text-gold fs-5">₹1101</strong>
+                        </div>
+                    </label>
+                </div>
+
                 <div class="text-center mb-4 p-4 rounded animate-entry delay-5"
                     style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3);">
-                    <h4 class="mb-3 text-white">Consultation Fee: <span class="text-gold fw-bold">₹751</span></h4>
+                    <h4 class="mb-3 text-white">To Pay: <span id="display-amount" class="text-gold fw-bold">₹501</span></h4>
 
                     <img src="https://raw.githubusercontent.com/prarabdhajyotishkendra-pixel/prarabdha-jyotish/main/static/images/qr.png"
                         alt="Payment QR" class="img-fluid shadow"
@@ -184,36 +263,13 @@
 
                     <button type="button" id="pay-btn" class="btn btn-upi w-100 mb-2 mt-2"
                         onclick="triggerPaymentFlow()">
-                        <i class="fa-solid fa-mobile-screen-button me-2"></i> Pay ₹751 Now
+                        <i class="fa-solid fa-mobile-screen-button me-2"></i> Pay ₹<span id="btn-amount">501</span> Now
                     </button>
                     <small class="text-white-50 d-block" id="pay-hint">(Opens GPay, PhonePe, Paytm
                         automatically)</small>
-
-                    <div id="verification-box"
-                        style="display: none; margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(212, 175, 55, 0.3); animation: orconixReveal 0.5s ease forwards;">
-
-                        <div class="form-check d-flex justify-content-center align-items-center mb-3 text-start">
-                            <input class="form-check-input me-2" type="checkbox" id="payment-done-check"
-                                onchange="toggleTxnField()"
-                                style="background-color: transparent; border-color: #D4AF37; cursor: pointer; width: 20px; height: 20px;">
-                            <label class="form-check-label text-white" for="payment-done-check"
-                                style="cursor: pointer;">
-                                I've Completed Payment ✅
-                            </label>
-                        </div>
-
-                        <div id="digit-input-container" style="display: none; transition: 0.3s;">
-                            <p class="text-white-50 mb-2" style="font-size: 13px;">Enter Last 4 digits of Transaction ID
-                            </p>
-                            <input type="text" id="txn-digits" class="form-control digit-box mb-4 mx-auto"
-                                style="width: 150px;" maxlength="4" placeholder="XXXX"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateSubmit();">
-                        </div>
-                    </div>
                 </div>
 
-                <button type="submit" id="submit-btn" class="btn btn-whatsapp w-100 animate-entry delay-6"
-                    style="opacity: 0.4; cursor: not-allowed; transition: 0.3s;" disabled>
+                <button type="submit" id="submit-btn" class="btn btn-whatsapp w-100 animate-entry delay-6">
                     <i class="fa-brands fa-whatsapp me-2"></i> Submit to WhatsApp
                 </button>
             </form>
@@ -222,12 +278,28 @@
 </div>
 
 <script>
+    // --- SCARCITY BANNER LOGIC ---
+    (function() {
+        const today = new Date();
+        const seed = today.getFullYear() + today.getMonth() + today.getDate();
+        const slots = (seed % 4) + 2; // Random deterministic number between 2 and 5
+        const slotEl = document.getElementById('slots-left');
+        if (slotEl) slotEl.innerText = slots;
+    })();
+
+    // --- TIERED PRICING LOGIC ---
+    function updatePaymentAmount() {
+        const selectedAmount = document.querySelector('input[name="package"]:checked').value;
+        document.getElementById('display-amount').innerText = `₹${selectedAmount}`;
+        document.getElementById('btn-amount').innerText = selectedAmount;
+    }
+
     // --- SMART PAYMENT FLOW LOGIC ---
     function triggerPaymentFlow() {
+        const selectedAmount = document.querySelector('input[name="package"]:checked').value;
         const upiId = "6267357802@ybl";
         const payeeName = "Prarabdha Jyotish Kendra";
-        const amount = "751";
-        const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+        const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${selectedAmount}&cu=INR`;
 
         // Mobile vs Desktop Detection
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -244,35 +316,6 @@
         payBtn.style.background = 'rgba(255,255,255,0.1)';
         payBtn.style.color = '#fff';
         document.getElementById('pay-hint').style.display = 'none';
-
-        // Reveal Verification Box
-        document.getElementById('verification-box').style.display = 'block';
-    }
-
-    function toggleDigitInput() {
-        const isChecked = document.getElementById('payment-done-check').checked;
-        const digitContainer = document.getElementById('digit-input-container');
-        digitContainer.style.display = isChecked ? 'block' : 'none';
-
-        if (!isChecked) document.getElementById('txn-digits').value = '';
-        validateSubmit();
-    }
-
-    function validateSubmit() {
-        const isChecked = document.getElementById('payment-done-check').checked;
-        const digits = document.getElementById('txn-digits').value;
-        const submitBtn = document.getElementById('submit-btn');
-
-        // Exact 4 digits required
-        if (isChecked && digits.length === 4) {
-            submitBtn.removeAttribute('disabled');
-            submitBtn.style.opacity = '1';
-            submitBtn.style.cursor = 'pointer';
-        } else {
-            submitBtn.setAttribute('disabled', 'true');
-            submitBtn.style.opacity = '0.4';
-            submitBtn.style.cursor = 'not-allowed';
-        }
     }
 
     // --- WHATSAPP SUBMIT LOGIC (UPDATED FORMAT) ---
@@ -282,13 +325,28 @@
         const time = document.querySelector('[name="birth_time"]')?.value || 'N/A';
         const place = document.querySelector('[name="birth_place"]')?.value || 'N/A';
         const phone = document.querySelector('[name="phone"]')?.value || 'N/A';
-        const txnDigits = document.getElementById('txn-digits').value || '0000';
+        
+        const selectedPackage = document.querySelector('input[name="package"]:checked');
+        const amount = selectedPackage.value;
+        const serviceName = selectedPackage.getAttribute('data-name');
 
-        const message = `Namaste Prarabdha Jyotish 🙏\n\n*Full Kundali Request*\nName: ${name}\nDOB: ${dob}\nTime: ${time}\nPlace: ${place}\nPhone: ${phone}\nService: Sampoorna Kundali\nAmount: ₹751\nTransaction Last 4 digits: ${txnDigits}\n\nPayment completed.\nPlease confirm.`;
+        const message = `Namaste Prarabdha Jyotish 🙏\n\n*Full Kundali Request*\nName: ${name}\nDOB: ${dob}\nTime: ${time}\nPlace: ${place}\nPhone: ${phone}\nPackage: ${serviceName}\nAmount: ₹${amount}\n\nPayment completed.\nPlease confirm.`;
 
-        // Updated WhatsApp Number
-        const whatsappUrl = 'https://wa.me/916267357802?text=' + encodeURIComponent(message);
-        window.open(whatsappUrl, '_blank');
+        // Prevent immediate submission to show popup
+        event.preventDefault();
+        
+        // Show Success Popup
+        document.getElementById('success-popup').style.display = 'flex';
+
+        setTimeout(() => {
+            // Updated WhatsApp Number
+            const whatsappUrl = 'https://wa.me/916267357802?text=' + encodeURIComponent(message);
+            window.open(whatsappUrl, '_blank');
+            // Actually submit the form to backend after opening WhatsApp
+            if(document.getElementById('astro-form')) {
+                HTMLFormElement.prototype.submit.call(document.getElementById('astro-form'));
+            }
+        }, 3000);
     });
 
     // --- GOLDEN CURSOR EFFECT ---

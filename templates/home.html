@@ -113,6 +113,27 @@
         animation-delay: 1.6s;
         will-change: filter, transform;
     }
+
+    /* Zodiac Card Styles */
+    .zodiac-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        transition: 0.3s ease;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+    .zodiac-card:hover {
+        background: rgba(212, 175, 55, 0.1);
+        border-color: #D4AF37;
+        color: #D4AF37;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
+    }
 </style>
 
 <div class="container hero-section">
@@ -171,6 +192,67 @@
                 <p>Chat instantly with our advanced AI trained on ancient Vedic scriptures for immediate answers.</p>
                 <a href="/chat/" class="btn-gold">Chat Now</a>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- RASHIFAL SECTION -->
+<div class="container services-container mt-5 pt-4 pb-5">
+    <div class="text-center mb-5 animate-entry delay-4">
+        <h2 class="text-gold">Daily Rashifal</h2>
+        <p class="text-white-50">Select your zodiac sign for today's spiritual insight.</p>
+    </div>
+
+    <div class="row g-3 justify-content-center px-lg-5">
+        <!-- Zodiac Cards Grid -->
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-5">
+            <div class="zodiac-card" onclick="showRashifal('Aries')">♈ Aries</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-5">
+            <div class="zodiac-card" onclick="showRashifal('Taurus')">♉ Taurus</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-5">
+            <div class="zodiac-card" onclick="showRashifal('Gemini')">♊ Gemini</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-6">
+            <div class="zodiac-card" onclick="showRashifal('Cancer')">♋ Cancer</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-6">
+            <div class="zodiac-card" onclick="showRashifal('Leo')">♌ Leo</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-6">
+            <div class="zodiac-card" onclick="showRashifal('Virgo')">♍ Virgo</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-7">
+            <div class="zodiac-card" onclick="showRashifal('Libra')">♎ Libra</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-7">
+            <div class="zodiac-card" onclick="showRashifal('Scorpio')">♏ Scorpio</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-7">
+            <div class="zodiac-card" onclick="showRashifal('Sagittarius')">♐ Sagittarius</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-8">
+            <div class="zodiac-card" onclick="showRashifal('Capricorn')">♑ Capricorn</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-8">
+            <div class="zodiac-card" onclick="showRashifal('Aquarius')">♒ Aquarius</div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 animate-card delay-8">
+            <div class="zodiac-card" onclick="showRashifal('Pisces')">♓ Pisces</div>
+        </div>
+    </div>
+</div>
+
+<!-- Rashifal Modal -->
+<div id="rashifal-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(11,12,16,0.9); z-index: 999999; align-items: center; justify-content: center; backdrop-filter: blur(10px);">
+    <div class="glass-card text-center p-5 position-relative" style="max-width: 500px; width: 90%; animation: orconixCard 0.4s ease forwards; background: linear-gradient(135deg, rgba(212,175,55,0.05), rgba(0,0,0,0.9)); border: 1px solid #D4AF37;">
+        <button onclick="document.getElementById('rashifal-modal').style.display='none'" class="btn text-white-50 position-absolute" style="top: 10px; right: 15px; font-size: 1.5rem; background: transparent; border: none;">&times;</button>
+        <h3 class="text-gold mb-3" id="rashifal-title" style="font-weight: bold;">Zodiac</h3>
+        <hr class="border-secondary mb-4">
+        <p class="text-white" style="font-size: 1.1rem; line-height: 1.7; font-style: italic;">"Today brings new financial opportunities and deep spiritual peace. Trust your intuition and embrace the divine energy surrounding you."</p>
+        <div class="mt-4 pt-3" style="border-top: 1px dashed rgba(212,175,55,0.3);">
+            <p class="text-success mb-0 fw-bold" style="font-size: 0.95rem;">Lucky Color: <span class="text-white">Gold</span> <span class="mx-3 text-secondary">|</span> Lucky Number: <span class="text-white">7</span></p>
         </div>
     </div>
 </div>
@@ -320,5 +402,11 @@
         initBgParticles();
         animateBg();
     })();
+
+    // 3. Rashifal Logic
+    function showRashifal(sign) {
+        document.getElementById('rashifal-title').innerText = sign + ' - Today\'s Insight';
+        document.getElementById('rashifal-modal').style.display = 'flex';
+    }
 </script>
 {% endblock %}

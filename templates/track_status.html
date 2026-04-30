@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<canvas id="bg-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1;"></canvas>
+
+<div class="container mt-5 pt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="text-center mb-4">
+                <h2 class="text-gold" style="font-weight: 700;">Track Your Consultation</h2>
+                <p class="text-white-50">Enter your registered phone number to check live status.</p>
+            </div>
+            
+            <div class="glass-card p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" style="background: rgba(212, 175, 55, 0.1); border: 1px solid #D4AF37; color: #D4AF37;"><i class="fa-solid fa-phone"></i></span>
+                        <input type="text" name="phone" class="form-control" placeholder="Enter Phone Number..." value="{{ phone_searched }}" required style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white;">
+                        <button class="btn btn-gold" type="submit">Track Status</button>
+                    </div>
+                </form>
+
+                {% if error %}
+                <div class="alert alert-danger mt-3" style="background: rgba(220, 53, 69, 0.1); border: 1px solid #dc3545; color: #ff6b6b;">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>{{ error }}
+                </div>
+                {% endif %}
+
+                {% if order %}
+                <hr class="border-secondary my-4">
+                <div class="text-start">
+                    <h5 class="text-white mb-2">Order Details</h5>
+                    <p class="text-white-50 mb-1"><strong>Name:</strong> {{ order.name }}</p>
+                    <p class="text-white-50 mb-4"><strong>Service:</strong> <span class="text-gold">{{ order_type }}</span></p>
+
+                    <h5 class="text-white mb-3">Live Status:</h5>
+                    <div class="timeline">
+                        <!-- Step 1: Received -->
+                        <div class="timeline-step {% if step1 %}active{% endif %}">
+                            <div class="timeline-icon"><i class="fa-solid fa-check"></i></div>
+                            <div class="timeline-content">
+                                <h6 class="text-white mb-1">Payment Received 🟢</h6>
+                                <p class="text-white-50 small mb-0">Your request has been logged successfully.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: In Review -->
+                        <div class="timeline-step {% if step2 %}active{% endif %}">
+                            <div class="timeline-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                            <div class="timeline-content">
+                                <h6 class="text-white mb-1">Astrologer Review 🔵</h6>
+                                <p class="text-white-50 small mb-0">Our expert is analyzing your details/palm.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Completed -->
+                        <div class="timeline-step {% if step3 %}active{% endif %}">
+                            <div class="timeline-icon"><i class="fa-solid fa-star"></i></div>
+                            <div class="timeline-content">
+                                <h6 class="text-white mb-1">Completed 🟡</h6>
+                                <p class="text-white-50 small mb-0">Report is ready and sent via WhatsApp.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Timeline CSS */
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 14px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: rgba(255,255,255,0.1);
+    }
+    .timeline-step {
+        position: relative;
+        margin-bottom: 25px;
+        opacity: 0.4;
+        transition: 0.3s;
+    }
+    .timeline-step:last-child {
+        margin-bottom: 0;
+    }
+    .timeline-step.active {
+        opacity: 1;
+    }
+    .timeline-icon {
+        position: absolute;
+        left: -30px;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #0B0C10;
+        border: 2px solid rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: rgba(255,255,255,0.5);
+        z-index: 2;
+    }
+    .timeline-step.active .timeline-icon {
+        border-color: #D4AF37;
+        color: #D4AF37;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    }
+    .timeline-content {
+        padding-left: 15px;
+        padding-top: 4px;
+    }
+</style>
+
+<script>
+    // BG Particles
+    (function () {
+        const bgCanvas = document.getElementById('bg-canvas');
+        if(!bgCanvas) return;
+        const bgCtx = bgCanvas.getContext('2d');
+        bgCanvas.width = window.innerWidth;
+        bgCanvas.height = window.innerHeight;
+
+        let bgParticlesArray = [];
+        const numberOfParticles = 60;
+        const connectionDistance = 140;
+
+        window.addEventListener('resize', function () {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            initBgParticles();
+        });
+
+        class BgParticle {
+            constructor() {
+                this.x = Math.random() * bgCanvas.width;
+                this.y = Math.random() * bgCanvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = 'rgba(245, 245, 245, 0.8)'; // Pearl White
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > bgCanvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > bgCanvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+            draw() {
+                bgCtx.fillStyle = this.color;
+                bgCtx.shadowBlur = 12;
+                bgCtx.shadowColor = 'rgba(255, 255, 255, 0.7)';
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fill();
+            }
+        }
+
+        function initBgParticles() {
+            bgParticlesArray = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                bgParticlesArray.push(new BgParticle());
+            }
+        }
+
+        function animateBg() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            for (let i = 0; i < bgParticlesArray.length; i++) {
+                bgParticlesArray[i].update();
+                bgParticlesArray[i].draw();
+
+                for (let j = i; j < bgParticlesArray.length; j++) {
+                    const dx = bgParticlesArray[i].x - bgParticlesArray[j].x;
+                    const dy = bgParticlesArray[i].y - bgParticlesArray[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < connectionDistance) {
+                        const opacity = 1 - (distance / connectionDistance);
+                        bgCtx.strokeStyle = `rgba(245, 245, 245, ${opacity * 0.3})`;
+                        bgCtx.lineWidth = 0.8;
+                        bgCtx.beginPath();
+                        bgCtx.moveTo(bgParticlesArray[i].x, bgParticlesArray[i].y);
+                        bgCtx.lineTo(bgParticlesArray[j].x, bgParticlesArray[j].y);
+                        bgCtx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateBg);
+        }
+
+        initBgParticles();
+        animateBg();
+    })();
+</script>
+{% endblock %}
