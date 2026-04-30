@@ -132,6 +132,12 @@
         border-color: #D4AF37;
         box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
     }
+    /* Lock Basic option visually for Kundali page */
+    .tier-radio:disabled + .tier-label {
+        opacity: 0.4;
+        cursor: not-allowed;
+        filter: grayscale(1);
+    }
     .tier-radio {
         display: none;
     }
@@ -174,8 +180,7 @@
 
             <h2 class="text-center mb-4 text-white animate-entry delay-1">संपूर्ण कुंडली</h2>
             <p class="text-white-50 text-center mb-4 animate-entry delay-1">
-                Provide birth details and complete the <strong class="text-gold">₹751</strong> payment to submit your
-                request.
+                Provide birth details and select a package to submit your request.
             </p>
 
             <form id="astro-form" method="post">
@@ -211,12 +216,13 @@
                 <div class="mb-4 text-start animate-entry delay-5">
                     <h5 class="text-white mb-3 fw-bold">Select Consultation Package:</h5>
 
-                    <input type="radio" name="package" id="tier-basic" class="tier-radio" value="251" data-name="Basic Palm Reading" onchange="updatePaymentAmount()">
+                    <!-- BASIC LOCKED (User should go to Hastarekha page for this) -->
+                    <input type="radio" name="package" id="tier-basic" class="tier-radio" value="251" data-name="Basic Palm Reading" disabled>
                     <label for="tier-basic" class="tier-label">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <strong class="text-white d-block" style="font-size: 1.1rem;">Basic</strong>
-                                <span class="text-white-50" style="font-size: 0.9rem;">Palm Reading</span>
+                                <span class="text-white-50" style="font-size: 0.9rem;">Palm Reading Only</span>
                             </div>
                             <strong class="text-gold fs-5">₹251</strong>
                         </div>
@@ -250,7 +256,7 @@
                     style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3);">
                     <h4 class="mb-3 text-white">To Pay: <span id="display-amount" class="text-gold fw-bold">₹501</span></h4>
 
-                    <!-- FIXED QR CODE LOGIC -->
+                    <!-- FIXED QR CODE PATH -->
                     <img src="{% static 'images/qr.png' %}"
                         alt="Payment QR" class="img-fluid shadow"
                         style="max-width: 200px; border: 2px solid #D4AF37; border-radius: 10px; background: white; padding: 10px; display: block; margin: 15px auto;">
@@ -283,35 +289,44 @@
     (function() {
         const today = new Date();
         const seed = today.getFullYear() + today.getMonth() + today.getDate();
-        const slots = (seed % 4) + 2; // Random deterministic number between 2 and 5
+        const slots = (seed % 4) + 2; 
         const slotEl = document.getElementById('slots-left');
         if (slotEl) slotEl.innerText = slots;
     })();
 
     // --- TIERED PRICING LOGIC ---
     function updatePaymentAmount() {
-        const selectedAmount = document.querySelector('input[name="package"]:checked').value;
-        document.getElementById('display-amount').innerText = `₹${selectedAmount}`;
-        document.getElementById('btn-amount').innerText = selectedAmount;
+        const selectedOption = document.querySelector('input[name="package"]:checked');
+        if (selectedOption) {
+            const amount = selectedOption.value;
+            document.getElementById('display-amount').innerText = `₹${amount}`;
+            document.getElementById('btn-amount').innerText = amount;
+        }
     }
 
     // --- SMART PAYMENT FLOW LOGIC ---
     function triggerPaymentFlow() {
-        const selectedAmount = document.querySelector('input[name="package"]:checked').value;
+        const selectedOption = document.querySelector('input[name="package"]:checked');
+        
+        // Security: Don't process if user somehow selects disabled ₹251
+        if (!selectedOption || selectedOption.value === "251") {
+            alert("Please select a Kundali package (₹501 or ₹1101).");
+            return;
+        }
+
+        const selectedAmount = selectedOption.value;
         const upiId = "6267357802@ybl";
         const payeeName = "Prarabdha Jyotish Kendra";
         const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${selectedAmount}&cu=INR`;
 
-        // Mobile vs Desktop Detection
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         if (isMobile) {
-            window.location.href = upiLink; // Opens payment app
+            window.location.href = upiLink;
         } else {
             alert("Desktop Detected! 🖥️\n\nPlease scan the QR code above with your mobile phone to complete the payment.");
         }
 
-        // Change button UI
         const payBtn = document.getElementById('pay-btn');
         payBtn.innerHTML = '<i class="fa-solid fa-check-double me-2"></i> Payment Initiated';
         payBtn.style.background = 'rgba(255,255,255,0.1)';
@@ -319,31 +334,34 @@
         document.getElementById('pay-hint').style.display = 'none';
     }
 
-    // --- WHATSAPP SUBMIT LOGIC (UPDATED FORMAT) ---
+    // --- WHATSAPP SUBMIT LOGIC ---
     document.getElementById('astro-form').addEventListener('submit', function (event) {
+        const selectedPackage = document.querySelector('input[name="package"]:checked');
+        
+        // Final protection check
+        if (!selectedPackage || selectedPackage.value === "251") {
+            alert("Error: Basic Palm Reading is not available on this page. Please choose a Kundali package.");
+            event.preventDefault();
+            return false;
+        }
+
         const name = document.querySelector('[name="name"]')?.value || 'N/A';
         const dob = document.querySelector('[name="dob"]')?.value || 'N/A';
         const time = document.querySelector('[name="birth_time"]')?.value || 'N/A';
         const place = document.querySelector('[name="birth_place"]')?.value || 'N/A';
         const phone = document.querySelector('[name="phone"]')?.value || 'N/A';
         
-        const selectedPackage = document.querySelector('input[name="package"]:checked');
         const amount = selectedPackage.value;
         const serviceName = selectedPackage.getAttribute('data-name');
 
         const message = `Namaste Prarabdha Jyotish 🙏\n\n*Full Kundali Request*\nName: ${name}\nDOB: ${dob}\nTime: ${time}\nPlace: ${place}\nPhone: ${phone}\nPackage: ${serviceName}\nAmount: ₹${amount}\n\nPayment completed.\nPlease confirm.`;
 
-        // Prevent immediate submission to show popup
         event.preventDefault();
-        
-        // Show Success Popup
         document.getElementById('success-popup').style.display = 'flex';
 
         setTimeout(() => {
-            // Updated WhatsApp Number
             const whatsappUrl = 'https://wa.me/916267357802?text=' + encodeURIComponent(message);
             window.open(whatsappUrl, '_blank');
-            // Actually submit the form to backend after opening WhatsApp
             if(document.getElementById('astro-form')) {
                 HTMLFormElement.prototype.submit.call(document.getElementById('astro-form'));
             }
@@ -381,7 +399,7 @@
                 this.size = Math.random() * 3 + 1;
                 this.speedX = Math.random() * 2 - 1;
                 this.speedY = Math.random() * 2 - 1;
-                this.color = 'rgba(230, 184, 54, 0.9)'; // Golden
+                this.color = 'rgba(230, 184, 54, 0.9)'; 
             }
             update() {
                 this.x += this.speedX;
@@ -438,7 +456,7 @@
                 this.size = Math.random() * 1.5 + 0.5;
                 this.speedX = Math.random() * 1 - 0.5;
                 this.speedY = Math.random() * 1 - 0.5;
-                this.color = 'rgba(245, 245, 245, 0.8)'; // Pearl White
+                this.color = 'rgba(245, 245, 245, 0.8)';
             }
             update() {
                 this.x += this.speedX;
