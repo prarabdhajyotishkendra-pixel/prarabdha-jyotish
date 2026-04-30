@@ -19,7 +19,7 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-jewmul5#u^@501qdobr_+x&_sn=g$!6==-dvb%t5o5e+0l@#7b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'cloudinary',
     'astrology',
@@ -82,7 +81,7 @@ WSGI_APPLICATION = 'prarabdha_jyotish.wsgi.application'
 # Database Connection for Vercel/Supabase
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
+        default=os.getenv('DATABASE_URL'),
         conn_max_age=0
     )
 }
