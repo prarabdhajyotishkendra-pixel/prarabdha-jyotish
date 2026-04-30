@@ -1,5 +1,6 @@
 import urllib.parse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+import datetime
 from django.views.generic import TemplateView, CreateView
 from .models import PalmReading, Kundali
 from .forms import PalmReadingForm, KundaliForm
@@ -11,6 +12,32 @@ import os
 import google.generativeai as genai
 from django.http import JsonResponse
 from django.views import View
+from django.contrib.auth import logout
+
+def admin_logout_view(request):
+    logout(request)
+    return redirect('/')
+
+def dynamic_rashifal_view(request, zodiac_sign):
+    current_date = datetime.date.today()
+    try:
+        api_key = os.getenv("GEMINI_API_KEY", "AIzaSyDbTeJhS6KDPhkjRaPvvKpKY3SDLsCQPZ0")
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        prompt = f"Provide a detailed daily horoscope for {zodiac_sign} for {current_date} in Hindi. Cover health, career, and love life."
+        
+        response = model.generate_content(prompt)
+        horoscope_text = response.text
+    except Exception as e:
+        horoscope_text = "Rashifal generation failed. Please try again later."
+        
+    context = {
+        'zodiac_sign': zodiac_sign,
+        'current_date': current_date,
+        'horoscope_text': horoscope_text
+    }
+    return render(request, 'rashifal_detail.html', context)
 
 class HomeView(TemplateView):
     template_name = 'home.html'

@@ -9,8 +9,12 @@ from django.conf.urls.static import static
 
 # Hum apne custom admin site ko yahan import kar rahe hain jise humne admin.py mein banaya hai
 from astrology.admin import custom_admin_site 
+from astrology.views import admin_logout_view
 
 urlpatterns = [
+    # Force Fix for Django 5.x Admin Logout HTTP 405 error (uses custom GET view)
+    path('admin/logout/', admin_logout_view, name='admin_logout'),
+    
     # 1. Custom Professional Admin Dashboard
     path('admin/', custom_admin_site.urls),
     

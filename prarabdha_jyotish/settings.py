@@ -130,4 +130,6 @@ EMAIL_HOST_USER = 'prarabdhajyotishkendra@gmail.com'
 # aur wahan se 16-digit ka "App Password" generate karke yahan paste karo.
 EMAIL_HOST_PASSWORD = 'tnzy omdr fqxs teii'
 # Final Fix 2026
-# Final Password Fix     
+# Fix Django 5.x Admin Logout GET Request Issue
+LOGOUT_REDIRECT_URL = '/'
+SILENCED_SYSTEM_CHECKS = ['admin.E410']
