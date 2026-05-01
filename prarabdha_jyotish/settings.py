@@ -154,3 +154,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
 WHITENOISE_USE_FINDERS = True
+
+# Vercel Proxy & CSRF Trust
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app', 'https://prarabdha-jyotish.vercel.app']
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'

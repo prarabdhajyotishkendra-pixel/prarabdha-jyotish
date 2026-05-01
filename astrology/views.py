@@ -61,7 +61,7 @@ class HastarekhaCreateView(CreateView):
         encoded_message = urllib.parse.quote(message)
         whatsapp_url = f"https://wa.me/916267357802?text={encoded_message}"
         
-        return redirect(whatsapp_url)
+        return render(self.request, 'whatsapp_redirect.html', {'whatsapp_url': whatsapp_url})
 
 class KundaliCreateView(CreateView):
     model = Kundali
@@ -75,7 +75,7 @@ class KundaliCreateView(CreateView):
         encoded_message = urllib.parse.quote(message)
         whatsapp_url = f"https://wa.me/916267357802?text={encoded_message}"
         
-        return redirect(whatsapp_url)
+        return render(self.request, 'whatsapp_redirect.html', {'whatsapp_url': whatsapp_url})
 
 class SuccessView(TemplateView):
     template_name = 'success.html'

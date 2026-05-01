@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container text-center py-5 mt-5">
+    <div class="glass-card p-5 mx-auto" style="max-width: 500px; background: rgba(37, 211, 102, 0.1); border: 1px solid #25D366; border-radius: 15px; backdrop-filter: blur(10px);">
+        <i class="fa-brands fa-whatsapp fa-4x mb-3" style="color: #25D366;"></i>
+        <h2 class="text-white mb-3 fw-bold">Booking Confirmed!</h2>
+        <p class="text-white-50 mb-4">Redirecting you securely to WhatsApp...</p>
+        <a href="{{ whatsapp_url }}" class="btn w-100 fw-bold p-3" style="background: #25D366; color: black; border-radius: 8px;">Click Here if not Redirected</a>
+    </div>
+    <script>
+        setTimeout(function() {
+            window.location.href = "{{ whatsapp_url|safe }}";
+        }, 1500);
+    </script>
+</div>
+{% endblock %}
