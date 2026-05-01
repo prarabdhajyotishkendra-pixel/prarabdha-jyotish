@@ -55,7 +55,7 @@
         will-change: transform, opacity, filter;
     }
 
-    /* Input fields styling for premium look */
+    /* Input fields styling */
     .form-control,
     .form-control:focus {
         background-color: rgba(255, 255, 255, 0.05);
@@ -116,6 +116,7 @@
         margin-bottom: 30px;
         position: relative;
     }
+
     .stepper-container::before {
         content: '';
         position: absolute;
@@ -123,9 +124,10 @@
         left: 0;
         right: 0;
         height: 2px;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         z-index: 1;
     }
+
     .step {
         position: relative;
         z-index: 2;
@@ -134,11 +136,13 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        color: rgba(255,255,255,0.5);
+        color: rgba(255, 255, 255, 0.5);
     }
+
     .step.active {
         color: #D4AF37;
     }
+
     .step-circle {
         width: 35px;
         height: 35px;
@@ -148,17 +152,19 @@
         align-items: center;
         justify-content: center;
         margin-bottom: 5px;
-        border: 2px solid rgba(255,255,255,0.2);
+        border: 2px solid rgba(255, 255, 255, 0.2);
         font-weight: bold;
         font-size: 14px;
         transition: 0.3s;
     }
+
     .step.active .step-circle {
         background: rgba(212, 175, 55, 0.1);
         border-color: #D4AF37;
         color: #D4AF37;
         box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
     }
+
     .step-text {
         font-size: 12px;
         font-weight: 500;
@@ -179,23 +185,27 @@
         transition: 0.3s ease;
         position: relative;
     }
+
     .tier-label:hover {
         background: rgba(255, 255, 255, 0.08);
     }
-    .tier-radio:checked + .tier-label {
+
+    .tier-radio:checked+.tier-label {
         background: rgba(212, 175, 55, 0.1);
         border-color: #D4AF37;
         box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
     }
-    /* Lock non-Palm-Reading options visually */
-    .tier-radio:disabled + .tier-label {
+
+    .tier-radio:disabled+.tier-label {
         opacity: 0.5;
         cursor: not-allowed;
         filter: grayscale(1);
     }
+
     .tier-radio {
         display: none;
     }
+
     .best-value-tag {
         position: absolute;
         top: -12px;
@@ -211,21 +221,27 @@
 </style>
 
 <!-- Blessing Card Popup Modal -->
-<div id="success-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(11,12,16,0.95); z-index: 999999; align-items: center; justify-content: center; flex-direction: column; backdrop-filter: blur(10px);">
-    <div class="blessing-card text-center p-5" style="background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(0,0,0,0.8)); border: 2px solid #D4AF37; border-radius: 20px; box-shadow: 0 0 30px rgba(212,175,55,0.3); animation: flipIn 0.8s ease forwards; max-width: 90%; transform-style: preserve-3d;">
+<div id="success-popup"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(11,12,16,0.95); z-index: 999999; align-items: center; justify-content: center; flex-direction: column; backdrop-filter: blur(10px);">
+    <div class="blessing-card text-center p-5"
+        style="background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(0,0,0,0.8)); border: 2px solid #D4AF37; border-radius: 20px; box-shadow: 0 0 30px rgba(212,175,55,0.3); animation: flipIn 0.8s ease forwards; max-width: 90%; transform-style: preserve-3d;">
         <div style="font-size: 4rem; color: #25D366; margin-bottom: 15px;">✅</div>
         <h3 class="text-white mb-3" style="font-weight: 700;">Payment Confirmed!</h3>
         <h4 class="text-gold mb-4" style="font-weight: bold; line-height: 1.5;">भगवान आपकी मनोकामना पूर्ण करें 🕉️</h4>
-        <p class="text-white-50 mt-3" style="font-size: 14px;"><i class="fa-solid fa-spinner fa-spin me-2 text-gold"></i> Redirecting to WhatsApp...</p>
+        <p class="text-white-50 mt-3" style="font-size: 14px;"><i
+                class="fa-solid fa-spinner fa-spin me-2 text-gold"></i> Redirecting to WhatsApp...</p>
     </div>
 </div>
 
 <div class="row justify-content-center" style="position: relative; z-index: 1;">
     <div class="col-md-8 col-lg-6">
         <div class="glass-card p-4 text-start animate-entry">
-            
-            <div class="alert alert-warning text-center animate-entry delay-1" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.5); color: #D4AF37; font-weight: 500; border-radius: 8px; padding: 10px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(212,175,55,0.1);">
-                   Hurry! Only <span id="slots-left" class="fw-bold" style="font-size: 1.2rem; background: #D4AF37; color: #0B0C10; padding: 2px 8px; border-radius: 4px; margin: 0 5px;">3</span> consultation slots remaining today.
+
+            <div class="alert alert-warning text-center animate-entry delay-1"
+                style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.5); color: #D4AF37; font-weight: 500; border-radius: 8px; padding: 10px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(212,175,55,0.1);">
+                Hurry! Only <span id="slots-left" class="fw-bold"
+                    style="font-size: 1.2rem; background: #D4AF37; color: #0B0C10; padding: 2px 8px; border-radius: 4px; margin: 0 5px;">3</span>
+                consultation slots remaining today.
             </div>
 
             <div class="stepper-container animate-entry delay-1">
@@ -244,14 +260,19 @@
             </div>
 
             <h2 class="text-center mb-4 text-white animate-entry delay-1">हस्तरेखा परीक्षण</h2>
-            <p class="text-white text-center mb-4 animate-entry delay-1" style="font-size: 14px; color: rgba(255,255,255,0.8) !important;">Please fill out your details and make the payment to begin your palm reading.</p>
+            <p class="text-white text-center mb-4 animate-entry delay-1"
+                style="font-size: 14px; color: rgba(255,255,255,0.8) !important;">Please fill out your details and make
+                the payment to begin your palm reading.</p>
 
             <form id="astro-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="mb-4 animate-entry delay-2">
-                    <label class="form-label text-white fw-bold">Upload Palm Image <span class="text-danger">*</span></label>
-                    <div class="p-3 mb-3 rounded" style="background: rgba(255,255,255,0.03); border-left: 3px solid #D4AF37; font-size: 13px; color: rgba(255,255,255,0.8);">
-                        <i class="fa-solid fa-circle-info text-gold me-1"></i> <strong class="text-white">Photo Guide:</strong>
+                    <label class="form-label text-white fw-bold">Upload Palm Image <span
+                            class="text-danger">*</span></label>
+                    <div class="p-3 mb-3 rounded"
+                        style="background: rgba(255,255,255,0.03); border-left: 3px solid #D4AF37; font-size: 13px; color: rgba(255,255,255,0.8);">
+                        <i class="fa-solid fa-circle-info text-gold me-1"></i> <strong class="text-white">Photo
+                            Guide:</strong>
                         <ul class="mb-0 mt-2 ps-3" style="list-style-type: '✔ ';">
                             <li class="mb-1">Full <strong class="text-warning">RIGHT HAND</strong> palm visible</li>
                             <li class="mb-1">Good natural lighting (avoid harsh flash)</li>
@@ -259,19 +280,24 @@
                         </ul>
                     </div>
                     {{ form.image }}
-                    
+
                     <!-- AI Palm Scanner Box -->
-                    <div id="ai-scan-box" class="mt-3 p-3 rounded shadow-lg" style="display: none; background: rgba(10, 20, 15, 0.8); border: 1px solid #25D366; position: relative; overflow: hidden; box-shadow: inset 0 0 15px rgba(37,211,102,0.1);">
-                        <div id="scan-laser" style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: #25D366; box-shadow: 0 0 10px #25D366, 0 0 20px #25D366; animation: scanLine 1.5s infinite; display: none; z-index: 2;"></div>
-                        <div class="d-flex align-items-center mb-2" style="border-bottom: 1px solid rgba(37,211,102,0.3); padding-bottom: 8px;">
+                    <div id="ai-scan-box" class="mt-3 p-3 rounded shadow-lg"
+                        style="display: none; background: rgba(10, 20, 15, 0.8); border: 1px solid #25D366; position: relative; overflow: hidden;">
+                        <div id="scan-laser"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: #25D366; box-shadow: 0 0 10px #25D366; animation: scanLine 1.5s infinite; display: none; z-index: 2;">
+                        </div>
+                        <div class="d-flex align-items-center mb-2"
+                            style="border-bottom: 1px solid rgba(37,211,102,0.3); padding-bottom: 8px;">
                             <i class="fa-solid fa-microchip text-success me-2 fs-5"></i>
-                            <h6 class="text-success mb-0 fw-bold" style="letter-spacing: 1px; font-family: monospace;">AI VISION SCANNER</h6>
+                            <h6 class="text-success mb-0 fw-bold" style="letter-spacing: 1px; font-family: monospace;">
+                                AI VISION SCANNER</h6>
                         </div>
-                        <div id="scan-logs" class="text-white-50 mt-2" style="font-family: monospace; font-size: 13px; line-height: 1.7;">
-                            <!-- JS logs here -->
-                        </div>
+                        <div id="scan-logs" class="text-white-50 mt-2"
+                            style="font-family: monospace; font-size: 13px; line-height: 1.7;"></div>
                     </div>
                 </div>
+
                 <div class="mb-3 animate-entry delay-3">
                     <label class="form-label text-white fw-bold">Full Name</label>
                     {{ form.name }}
@@ -289,9 +315,8 @@
 
                 <div class="mb-4 text-start animate-entry delay-5">
                     <h5 class="text-white mb-3 fw-bold">Select Consultation Package:</h5>
-
-                    <!-- LOCKED TO BASIC (₹251) FOR HASTAREKHA PAGE -->
-                    <input type="radio" name="package" id="tier-basic" class="tier-radio" value="251" data-name="Basic Palm Reading" checked>
+                    <input type="radio" name="package" id="tier-basic" class="tier-radio" value="251"
+                        data-name="Basic Palm Reading" checked>
                     <label for="tier-basic" class="tier-label">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
@@ -302,7 +327,8 @@
                         </div>
                     </label>
 
-                    <input type="radio" name="package" id="tier-popular" class="tier-radio" value="501" data-name="Palm + Kundali" disabled>
+                    <input type="radio" name="package" id="tier-popular" class="tier-radio" value="501"
+                        data-name="Palm + Kundali" disabled>
                     <label for="tier-popular" class="tier-label">
                         <div class="best-value-tag">GO TO KUNDALI PAGE</div>
                         <div class="d-flex justify-content-between align-items-center">
@@ -317,12 +343,14 @@
 
                 <div class="text-center mb-4 p-4 rounded animate-entry delay-5"
                     style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3);">
-                    <h4 class="mb-3 text-white">To Pay: <span id="display-amount" class="text-gold fw-bold">₹251</span></h4>
+                    <h4 class="mb-3 text-white">To Pay: <span id="display-amount" class="text-gold fw-bold">₹251</span>
+                    </h4>
 
-                    <!-- FIXED QR CODE PATH -->
-                    <img src="{% static 'images/qr.png' %}"
-                         alt="Payment QR" class="img-fluid shadow"
-                         style="max-width: 200px; border: 2px solid #D4AF37; border-radius: 10px; background: white; padding: 10px; display: block; margin: 15px auto;">
+                    <!-- QR CODE FIXED TAG -->
+                    <img src="https://raw.githubusercontent.com/prarabdhajyotishkendra-pixel/prarabdha-jyotish/main/static/images/qr.png"
+                        alt="Payment QR" class="img-fluid shadow"
+                        style="max-width: 200px; border: 2px solid #D4AF37; border-radius: 10px; background: white; padding: 10px; display: block; margin: 15px auto;"
+                        onerror="this.src='https://via.placeholder.com/200?text=QR+Not+Found'">
 
                     <div class="mt-3 mb-3 text-white-50" style="font-size: 14px;">
                         <p class="mb-1">UPI ID: <strong class="text-warning"
@@ -351,39 +379,58 @@
     style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999;"></canvas>
 
 <style>
-@keyframes scanLine {
-    0% { top: 0%; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-}
-@keyframes flipIn {
-    0% { transform: perspective(1000px) rotateY(-90deg); opacity: 0; }
-    100% { transform: perspective(1000px) rotateY(0deg); opacity: 1; }
-}
+    @keyframes scanLine {
+        0% {
+            top: 0%;
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            top: 100%;
+            opacity: 0;
+        }
+    }
+
+    @keyframes flipIn {
+        0% {
+            transform: perspective(1000px) rotateY(-90deg);
+            opacity: 0;
+        }
+
+        100% {
+            transform: perspective(1000px) rotateY(0deg);
+            opacity: 1;
+        }
+    }
 </style>
 
 <script>
-    // --- SCARCITY BANNER LOGIC ---
-    (function() {
+    // SCARCITY BANNER LOGIC
+    (function () {
         const today = new Date();
         const seed = today.getFullYear() + today.getMonth() + today.getDate();
-        const slots = (seed % 4) + 2; // Random deterministic number between 2 and 5
+        const slots = (seed % 4) + 2;
         const slotEl = document.getElementById('slots-left');
         if (slotEl) slotEl.innerText = slots;
     })();
 
-    // --- AI PALM SCANNER LOGIC ---
-    document.getElementById('id_image')?.addEventListener('change', function(e) {
+    // AI PALM SCANNER LOGIC
+    document.getElementById('id_image')?.addEventListener('change', function (e) {
         if (e.target.files && e.target.files[0]) {
             const scanBox = document.getElementById('ai-scan-box');
             const logsBox = document.getElementById('scan-logs');
             const laser = document.getElementById('scan-laser');
-            
             scanBox.style.display = 'block';
             laser.style.display = 'block';
             logsBox.innerHTML = '';
-            
             const logs = [
                 "Initializing AI Palm Scanner...",
                 "Analyzing geometric hand contours...",
@@ -392,215 +439,137 @@
                 "Lines visibility: <span class='text-success'>92%</span>",
                 "<strong class='text-success'>Palm detected successfully ✅</strong>"
             ];
-            
             let delay = 0;
             logs.forEach((log, index) => {
                 setTimeout(() => {
                     logsBox.innerHTML += `<div><span style="color: #25D366;">></span> ${log}</div>`;
-                    if (index === logs.length - 1) {
-                        laser.style.display = 'none'; // Stop laser after done
-                    }
+                    if (index === logs.length - 1) { laser.style.display = 'none'; }
                 }, delay);
-                delay += 500; // 500ms between logs
+                delay += 500;
             });
         }
     });
 
-    // --- SMART PAYMENT FLOW ---
+    // SMART PAYMENT FLOW
     function triggerPaymentFlow() {
-        // Validation: Ensure only 251 is processed here
         const selectedAmount = "251";
         const upiId = "6267357802@ybl";
         const payeeName = "Prarabdha Jyotish Kendra";
         const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${selectedAmount}&cu=INR`;
-
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-        if (isMobile) {
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             window.location.href = upiLink;
         } else {
-            alert("Desktop Detected! 🖥️\n\nPlease scan the QR code above with your mobile phone to complete the payment.");
+            alert("Desktop Detected! 🖥️\n\nPlease scan the QR code above with your mobile phone.");
         }
-
-        const payBtn = document.getElementById('pay-btn');
-        payBtn.innerHTML = '<i class="fa-solid fa-check-double me-2"></i> Payment Initiated';
-        payBtn.style.background = 'rgba(255,255,255,0.1)';
-        payBtn.style.color = '#fff';
-        document.getElementById('pay-hint').style.display = 'none';
-
         document.getElementById('step2').classList.add('active');
     }
 
     document.getElementById('astro-form').addEventListener('submit', function (event) {
-        // Final protection: Don't allow submission if amount is somehow changed
         const selectedPackage = document.querySelector('input[name="package"]:checked');
         if (!selectedPackage || selectedPackage.value !== "251") {
             alert("Error: This page only allows ₹251 Palm Reading.");
-            event.preventDefault();
-            return false;
+            event.preventDefault(); return false;
         }
-
         document.getElementById('step3').classList.add('active');
-
         const name = document.querySelector('[name="name"]')?.value || 'N/A';
         const phone = document.querySelector('[name="phone"]')?.value || 'N/A';
-        const amount = selectedPackage.value;
-        const serviceName = selectedPackage.getAttribute('data-name');
-
-        const message = `Namaste Prarabdha Jyotish 🙏\n\nName: ${name}\nPhone: ${phone}\nPackage: ${serviceName}\nAmount: ₹${amount}\n\nPayment completed.\nPlease confirm.`;
-
+        const message = `Namaste Prarabdha Jyotish 🙏\n\nName: ${name}\nPhone: ${phone}\nPackage: Basic Palm Reading\nAmount: ₹251\n\nPayment completed.\nPlease confirm.`;
         event.preventDefault();
         document.getElementById('success-popup').style.display = 'flex';
-
         setTimeout(() => {
             const whatsappUrl = 'https://wa.me/916267357802?text=' + encodeURIComponent(message);
             window.open(whatsappUrl, '_blank');
-            HTMLFormElement.prototype.submit.call(document.getElementById('astro-form'));
+            setTimeout(() => { HTMLFormElement.prototype.submit.call(document.getElementById('astro-form')); }, 1000);
         }, 3000);
     });
 
-    // --- GOLDEN CURSOR EFFECT ---
+    // GOLDEN CURSOR EFFECT
     (function () {
         const cursorCanvas = document.getElementById('magic-cursor-canvas');
         if (!cursorCanvas) return;
         const cursorCtx = cursorCanvas.getContext('2d');
         cursorCanvas.width = window.innerWidth;
         cursorCanvas.height = window.innerHeight;
-
         let cursorParticlesArray = [];
-
-        window.addEventListener('resize', function () {
-            cursorCanvas.width = window.innerWidth;
-            cursorCanvas.height = window.innerHeight;
-        });
-
+        window.addEventListener('resize', () => { cursorCanvas.width = window.innerWidth; cursorCanvas.height = window.innerHeight; });
         const cursorMouse = { x: undefined, y: undefined };
-        window.addEventListener('mousemove', function (event) {
-            cursorMouse.x = event.x;
-            cursorMouse.y = event.y;
-            for (let i = 0; i < 3; i++) {
-                cursorParticlesArray.push(new CursorParticle());
-            }
+        window.addEventListener('mousemove', (e) => {
+            cursorMouse.x = e.x; cursorMouse.y = e.y;
+            for (let i = 0; i < 3; i++) { cursorParticlesArray.push(new CursorParticle()); }
         });
-
         class CursorParticle {
             constructor() {
-                this.x = cursorMouse.x;
-                this.y = cursorMouse.y;
+                this.x = cursorMouse.x; this.y = cursorMouse.y;
                 this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 2 - 1;
-                this.speedY = Math.random() * 2 - 1;
-                this.color = 'rgba(230, 184, 54, 0.9)'; 
+                this.speedX = Math.random() * 2 - 1; this.speedY = Math.random() * 2 - 1;
+                this.color = 'rgba(230, 184, 54, 0.9)';
             }
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+                this.x += this.speedX; this.y += this.speedY;
                 if (this.size > 0.2) this.size -= 0.05;
             }
             draw() {
                 cursorCtx.fillStyle = this.color;
-                cursorCtx.shadowBlur = 10;
-                cursorCtx.shadowColor = 'rgba(230, 184, 54, 1)';
-                cursorCtx.beginPath();
-                cursorCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                cursorCtx.fill();
+                cursorCtx.beginPath(); cursorCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); cursorCtx.fill();
             }
         }
-
         function animateCursor() {
             cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
             for (let i = 0; i < cursorParticlesArray.length; i++) {
-                cursorParticlesArray[i].update();
-                cursorParticlesArray[i].draw();
-                if (cursorParticlesArray[i].size <= 0.2) {
-                    cursorParticlesArray.splice(i, 1);
-                    i--;
-                }
+                cursorParticlesArray[i].update(); cursorParticlesArray[i].draw();
+                if (cursorParticlesArray[i].size <= 0.2) { cursorParticlesArray.splice(i, 1); i--; }
             }
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
     })();
 
-    // --- PEARL WHITE BACKGROUND MESH EFFECT ---
+    // BACKGROUND MESH EFFECT
     (function () {
         const bgCanvas = document.getElementById('bg-canvas');
         if (!bgCanvas) return;
         const bgCtx = bgCanvas.getContext('2d');
-        bgCanvas.width = window.innerWidth;
-        bgCanvas.height = window.innerHeight;
-
+        bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight;
         let bgParticlesArray = [];
-        const numberOfParticles = 60;
-        const connectionDistance = 140;
-
-        window.addEventListener('resize', function () {
-            bgCanvas.width = window.innerWidth;
-            bgCanvas.height = window.innerHeight;
-            initBgParticles();
-        });
-
         class BgParticle {
             constructor() {
-                this.x = Math.random() * bgCanvas.width;
-                this.y = Math.random() * bgCanvas.height;
+                this.x = Math.random() * bgCanvas.width; this.y = Math.random() * bgCanvas.height;
                 this.size = Math.random() * 1.5 + 0.5;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
+                this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * 1 - 0.5;
                 this.color = 'rgba(245, 245, 245, 0.8)';
             }
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+                this.x += this.speedX; this.y += this.speedY;
                 if (this.x > bgCanvas.width || this.x < 0) this.speedX = -this.speedX;
                 if (this.y > bgCanvas.height || this.y < 0) this.speedY = -this.speedY;
             }
             draw() {
-                bgCtx.fillStyle = this.color;
-                bgCtx.shadowBlur = 12;
-                bgCtx.shadowColor = 'rgba(255, 255, 255, 0.7)';
-                bgCtx.beginPath();
-                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                bgCtx.fill();
+                bgCtx.fillStyle = this.color; bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); bgCtx.fill();
             }
         }
-
-        function initBgParticles() {
+        function initBg() {
             bgParticlesArray = [];
-            for (let i = 0; i < numberOfParticles; i++) {
-                bgParticlesArray.push(new BgParticle());
-            }
+            for (let i = 0; i < 60; i++) { bgParticlesArray.push(new BgParticle()); }
         }
-
         function animateBg() {
             bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
             for (let i = 0; i < bgParticlesArray.length; i++) {
-                bgParticlesArray[i].update();
-                bgParticlesArray[i].draw();
-
+                bgParticlesArray[i].update(); bgParticlesArray[i].draw();
                 for (let j = i; j < bgParticlesArray.length; j++) {
                     const dx = bgParticlesArray[i].x - bgParticlesArray[j].x;
                     const dy = bgParticlesArray[i].y - bgParticlesArray[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < connectionDistance) {
-                        const opacity = 1 - (distance / connectionDistance);
-                        bgCtx.strokeStyle = `rgba(245, 245, 245, ${opacity * 0.3})`;
-                        bgCtx.lineWidth = 0.8;
-                        bgCtx.shadowBlur = 5;
-                        bgCtx.shadowColor = 'rgba(255, 255, 255, 0.5)';
-                        bgCtx.beginPath();
-                        bgCtx.moveTo(bgParticlesArray[i].x, bgParticlesArray[i].y);
-                        bgCtx.lineTo(bgParticlesArray[j].x, bgParticlesArray[j].y);
-                        bgCtx.stroke();
-                        bgCtx.shadowBlur = 0;
+                    if (distance < 140) {
+                        bgCtx.strokeStyle = `rgba(245, 245, 245, ${(1 - distance / 140) * 0.2})`;
+                        bgCtx.beginPath(); bgCtx.moveTo(bgParticlesArray[i].x, bgParticlesArray[i].y);
+                        bgCtx.lineTo(bgParticlesArray[j].x, bgParticlesArray[j].y); bgCtx.stroke();
                     }
                 }
             }
             requestAnimationFrame(animateBg);
         }
-
-        initBgParticles();
-        animateBg();
+        initBg(); animateBg();
     })();
 </script>
 {% endblock %}

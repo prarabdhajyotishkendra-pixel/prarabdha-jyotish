@@ -23,13 +23,9 @@ urlpatterns = [
 ]
 
 # 3. STATIC & MEDIA FILES SETUP
-if settings.DEBUG:
-    # Media Files (Clients ki uploaded Palm Photos ke liye)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
-    # Note: Humne yahan se STATIC_URL wala code hata diya hai kyunki 
-    # django.contrib.staticfiles automatically STATICFILES_DIRS (static folder) se 
-    # files serve kar deta hai jab DEBUG=True hota hai.
+# Media Files (Clients ki uploaded Palm Photos ke liye)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Final Header Customization (Safe Side)
 admin.site.site_header = "Prarabdha Jyotish Kendra Admin"

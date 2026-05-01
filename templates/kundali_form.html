@@ -124,23 +124,28 @@
         transition: 0.3s ease;
         position: relative;
     }
+
     .tier-label:hover {
         background: rgba(255, 255, 255, 0.08);
     }
-    .tier-radio:checked + .tier-label {
+
+    .tier-radio:checked+.tier-label {
         background: rgba(212, 175, 55, 0.1);
         border-color: #D4AF37;
         box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
     }
+
     /* Lock Basic option visually for Kundali page */
-    .tier-radio:disabled + .tier-label {
+    .tier-radio:disabled+.tier-label {
         opacity: 0.4;
         cursor: not-allowed;
         filter: grayscale(1);
     }
+
     .tier-radio {
         display: none;
     }
+
     .best-value-tag {
         position: absolute;
         top: -12px;
@@ -155,27 +160,40 @@
     }
 
     @keyframes flipIn {
-        0% { transform: perspective(1000px) rotateY(-90deg); opacity: 0; }
-        100% { transform: perspective(1000px) rotateY(0deg); opacity: 1; }
+        0% {
+            transform: perspective(1000px) rotateY(-90deg);
+            opacity: 0;
+        }
+
+        100% {
+            transform: perspective(1000px) rotateY(0deg);
+            opacity: 1;
+        }
     }
 </style>
 
 <!-- Blessing Card Popup Modal -->
-<div id="success-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(11,12,16,0.95); z-index: 999999; align-items: center; justify-content: center; flex-direction: column; backdrop-filter: blur(10px);">
-    <div class="blessing-card text-center p-5" style="background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(0,0,0,0.8)); border: 2px solid #D4AF37; border-radius: 20px; box-shadow: 0 0 30px rgba(212,175,55,0.3); animation: flipIn 0.8s ease forwards; max-width: 90%; transform-style: preserve-3d;">
+<div id="success-popup"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(11,12,16,0.95); z-index: 999999; align-items: center; justify-content: center; flex-direction: column; backdrop-filter: blur(10px);">
+    <div class="blessing-card text-center p-5"
+        style="background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(0,0,0,0.8)); border: 2px solid #D4AF37; border-radius: 20px; box-shadow: 0 0 30px rgba(212,175,55,0.3); animation: flipIn 0.8s ease forwards; max-width: 90%; transform-style: preserve-3d;">
         <div style="font-size: 4rem; color: #25D366; margin-bottom: 15px;">✅</div>
         <h3 class="text-white mb-3" style="font-weight: 700;">Payment Confirmed!</h3>
         <h4 class="text-gold mb-4" style="font-weight: bold; line-height: 1.5;">भगवान आपकी मनोकामना पूर्ण करें 🕉️</h4>
-        <p class="text-white-50 mt-3" style="font-size: 14px;"><i class="fa-solid fa-spinner fa-spin me-2 text-gold"></i> Redirecting to WhatsApp...</p>
+        <p class="text-white-50 mt-3" style="font-size: 14px;"><i
+                class="fa-solid fa-spinner fa-spin me-2 text-gold"></i> Redirecting to WhatsApp...</p>
     </div>
 </div>
 
 <div class="row justify-content-center" style="position: relative; z-index: 1;">
     <div class="col-md-8 col-lg-6">
         <div class="glass-card p-4 text-start animate-entry">
-            
-            <div class="alert alert-warning text-center animate-entry delay-1" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.5); color: #D4AF37; font-weight: 500; border-radius: 8px; padding: 10px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(212, 175, 55,0.1);">
-                     Hurry! Only <span id="slots-left" class="fw-bold" style="font-size: 1.2rem; background: #D4AF37; color: #0B0C10; padding: 2px 8px; border-radius: 4px; margin: 0 5px;">3</span> consultation slots remaining today.
+
+            <div class="alert alert-warning text-center animate-entry delay-1"
+                style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.5); color: #D4AF37; font-weight: 500; border-radius: 8px; padding: 10px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(212, 175, 55,0.1);">
+                Hurry! Only <span id="slots-left" class="fw-bold"
+                    style="font-size: 1.2rem; background: #D4AF37; color: #0B0C10; padding: 2px 8px; border-radius: 4px; margin: 0 5px;">3</span>
+                consultation slots remaining today.
             </div>
 
             <h2 class="text-center mb-4 text-white animate-entry delay-1">संपूर्ण कुंडली</h2>
@@ -217,7 +235,8 @@
                     <h5 class="text-white mb-3 fw-bold">Select Consultation Package:</h5>
 
                     <!-- BASIC LOCKED (User should go to Hastarekha page for this) -->
-                    <input type="radio" name="package" id="tier-basic" class="tier-radio" value="251" data-name="Basic Palm Reading" disabled>
+                    <input type="radio" name="package" id="tier-basic" class="tier-radio" value="251"
+                        data-name="Basic Palm Reading" disabled>
                     <label for="tier-basic" class="tier-label">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
@@ -228,7 +247,8 @@
                         </div>
                     </label>
 
-                    <input type="radio" name="package" id="tier-popular" class="tier-radio" value="501" data-name="Palm + Kundali" checked onchange="updatePaymentAmount()">
+                    <input type="radio" name="package" id="tier-popular" class="tier-radio" value="501"
+                        data-name="Palm + Kundali" checked onchange="updatePaymentAmount()">
                     <label for="tier-popular" class="tier-label">
                         <div class="best-value-tag">MOST POPULAR</div>
                         <div class="d-flex justify-content-between align-items-center">
@@ -240,12 +260,14 @@
                         </div>
                     </label>
 
-                    <input type="radio" name="package" id="tier-premium" class="tier-radio" value="1101" data-name="Complete Video Consultation" onchange="updatePaymentAmount()">
+                    <input type="radio" name="package" id="tier-premium" class="tier-radio" value="1101"
+                        data-name="Complete Video Consultation" onchange="updatePaymentAmount()">
                     <label for="tier-premium" class="tier-label mb-0">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <strong class="text-white d-block" style="font-size: 1.1rem;">Premium</strong>
-                                <span class="text-white-50" style="font-size: 0.9rem;">Complete Video Consultation</span>
+                                <span class="text-white-50" style="font-size: 0.9rem;">Complete Video
+                                    Consultation</span>
                             </div>
                             <strong class="text-gold fs-5">₹1101</strong>
                         </div>
@@ -254,12 +276,15 @@
 
                 <div class="text-center mb-4 p-4 rounded animate-entry delay-5"
                     style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3);">
-                    <h4 class="mb-3 text-white">To Pay: <span id="display-amount" class="text-gold fw-bold">₹501</span></h4>
+                    <h4 class="mb-3 text-white">To Pay: <span id="display-amount" class="text-gold fw-bold">₹501</span>
+                    </h4>
 
-                    <!-- FIXED QR CODE PATH -->
-                    <img src="{% static 'images/qr.png' %}"
+                    <!-- QR CODE FIXED TAG -->
+                    <img src="https://raw.githubusercontent.com/prarabdhajyotishkendra-pixel/prarabdha-jyotish/main/static/images/qr.png"
                         alt="Payment QR" class="img-fluid shadow"
-                        style="max-width: 200px; border: 2px solid #D4AF37; border-radius: 10px; background: white; padding: 10px; display: block; margin: 15px auto;">
+                        style="max-width: 200px; border: 2px solid #D4AF37; border-radius: 10px; background: white; padding: 10px; display: block; margin: 15px auto;"
+                        onerror="this.src='https://via.placeholder.com/200?text=QR+Not+Found'">
+
 
                     <div class="mt-3 mb-3 text-white-50" style="font-size: 14px;">
                         <p class="mb-1">UPI ID: <strong class="text-warning"
@@ -286,10 +311,10 @@
 
 <script>
     // --- SCARCITY BANNER LOGIC ---
-    (function() {
+    (function () {
         const today = new Date();
         const seed = today.getFullYear() + today.getMonth() + today.getDate();
-        const slots = (seed % 4) + 2; 
+        const slots = (seed % 4) + 2;
         const slotEl = document.getElementById('slots-left');
         if (slotEl) slotEl.innerText = slots;
     })();
@@ -307,7 +332,7 @@
     // --- SMART PAYMENT FLOW LOGIC ---
     function triggerPaymentFlow() {
         const selectedOption = document.querySelector('input[name="package"]:checked');
-        
+
         // Security: Don't process if user somehow selects disabled ₹251
         if (!selectedOption || selectedOption.value === "251") {
             alert("Please select a Kundali package (₹501 or ₹1101).");
@@ -337,7 +362,7 @@
     // --- WHATSAPP SUBMIT LOGIC ---
     document.getElementById('astro-form').addEventListener('submit', function (event) {
         const selectedPackage = document.querySelector('input[name="package"]:checked');
-        
+
         // Final protection check
         if (!selectedPackage || selectedPackage.value === "251") {
             alert("Error: Basic Palm Reading is not available on this page. Please choose a Kundali package.");
@@ -350,7 +375,7 @@
         const time = document.querySelector('[name="birth_time"]')?.value || 'N/A';
         const place = document.querySelector('[name="birth_place"]')?.value || 'N/A';
         const phone = document.querySelector('[name="phone"]')?.value || 'N/A';
-        
+
         const amount = selectedPackage.value;
         const serviceName = selectedPackage.getAttribute('data-name');
 
@@ -362,7 +387,7 @@
         setTimeout(() => {
             const whatsappUrl = 'https://wa.me/916267357802?text=' + encodeURIComponent(message);
             window.open(whatsappUrl, '_blank');
-            if(document.getElementById('astro-form')) {
+            if (document.getElementById('astro-form')) {
                 HTMLFormElement.prototype.submit.call(document.getElementById('astro-form'));
             }
         }, 3000);
@@ -399,7 +424,7 @@
                 this.size = Math.random() * 3 + 1;
                 this.speedX = Math.random() * 2 - 1;
                 this.speedY = Math.random() * 2 - 1;
-                this.color = 'rgba(230, 184, 54, 0.9)'; 
+                this.color = 'rgba(230, 184, 54, 0.9)';
             }
             update() {
                 this.x += this.speedX;
