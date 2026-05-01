@@ -18,7 +18,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-pm-@p(r%a^r&a*b(d)h_a_j#y!o@tish-kendra-2026-v1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -81,6 +81,10 @@ DATABASES = {
         ssl_require=True
     )
 }
+
+# FIX FOR PSYCOPG2 "invalid connection option pgbouncer"
+if 'OPTIONS' in DATABASES['default'] and 'pgbouncer' in DATABASES['default']['OPTIONS']:
+    del DATABASES['default']['OPTIONS']['pgbouncer']
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
