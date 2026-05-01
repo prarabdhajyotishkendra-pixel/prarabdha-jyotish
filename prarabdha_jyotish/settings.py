@@ -138,7 +138,7 @@ EMAIL_HOST_PASSWORD = 'tnzy omdr fqxs teii'
 # Django 5.x Fixes
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/admin/' # Admin login ke baad redirect fix
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SILENCED_SYSTEM_CHECKS = ['admin.E410']

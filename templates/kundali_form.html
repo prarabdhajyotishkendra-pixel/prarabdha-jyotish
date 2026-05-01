@@ -369,8 +369,14 @@
             return false;
         }
 
-        // Show the success popup while Django natively handles form submission
-        document.getElementById('success-popup').style.display = 'flex';
+        // Show loading state while Django natively handles form submission
+        const submitBtn = document.getElementById('submit-btn');
+        if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Processing...';
+        } else {
+            const anySubmitBtn = document.querySelector('button[type="submit"]');
+            if (anySubmitBtn) anySubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Processing...';
+        }
     });
 
     // --- GOLDEN CURSOR EFFECT ---
