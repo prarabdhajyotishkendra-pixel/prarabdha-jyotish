@@ -57,7 +57,7 @@ class HastarekhaCreateView(CreateView):
         if self.object.image:
             image_url = self.request.build_absolute_uri(self.object.image.url)
             
-        message = f"*NAMASTE PRARABDHA JYOTISH!* 🕉️\n\nI want a *Palm Reading*.\n\n*CLIENT DETAILS:*\n• Name: {self.object.name}\n• Phone: {self.object.phone}\n• Amount: ₹251\n\n*VIEW HAND PHOTO:*\n\n{image_url}\n\n_System Note: Payment done and Hand Image uploaded successfully._"
+        message = f"*NAMASTE PRARABDHA JYOTISH!* 🕉️\n\nI want a *Palm Reading*.\n\n*CLIENT DETAILS:*\n• Name: {self.object.name}\n• Phone: {self.object.phone}\n• Amount: ₹251\n\nI will send my Palm Photos here on WhatsApp.\n\n_System Note: Payment done successfully._"
         encoded_message = urllib.parse.quote(message)
         whatsapp_url = f"https://wa.me/916267357802?text={encoded_message}"
         

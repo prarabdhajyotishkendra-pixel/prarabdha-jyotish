@@ -10,7 +10,7 @@ class PalmReading(models.Model):
         ('Paid', 'Paid')
     ]
     
-    image = models.ImageField(upload_to='palm_images/right_hand/')
+    image = models.ImageField(upload_to='palm_images/right_hand/', null=True, blank=True)
     name = models.CharField(max_length=200)
     address = models.TextField()
     phone = models.CharField(max_length=20, db_index=True)

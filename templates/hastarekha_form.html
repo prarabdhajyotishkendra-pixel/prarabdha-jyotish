@@ -298,38 +298,6 @@
 
             <form id="astro-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="mb-4 animate-entry delay-2">
-                    <label class="form-label text-white fw-bold">Upload Palm Image <span
-                            class="text-danger">*</span></label>
-                    <div class="p-3 mb-3 rounded"
-                        style="background: rgba(255,255,255,0.03); border-left: 3px solid #D4AF37; font-size: 13px; color: rgba(255,255,255,0.8);">
-                        <i class="fa-solid fa-circle-info text-gold me-1"></i> <strong class="text-white">Photo
-                            Guide:</strong>
-                        <ul class="mb-0 mt-2 ps-3" style="list-style-type: '✔ ';">
-                            <li class="mb-1">Full <strong class="text-warning">RIGHT HAND</strong> palm visible</li>
-                            <li class="mb-1">Good natural lighting (avoid harsh flash)</li>
-                            <li>Fingers straight, not bent</li>
-                        </ul>
-                    </div>
-                    {{ form.image }}
-
-                    <!-- AI Palm Scanner Box -->
-                    <div id="ai-scan-box" class="mt-3 p-3 rounded shadow-lg"
-                        style="display: none; background: rgba(10, 20, 15, 0.8); border: 1px solid #25D366; position: relative; overflow: hidden;">
-                        <div id="scan-laser"
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: #25D366; box-shadow: 0 0 10px #25D366; animation: scanLine 1.5s infinite; display: none; z-index: 2;">
-                        </div>
-                        <div class="d-flex align-items-center mb-2"
-                            style="border-bottom: 1px solid rgba(37,211,102,0.3); padding-bottom: 8px;">
-                            <i class="fa-solid fa-microchip text-success me-2 fs-5"></i>
-                            <h6 class="text-success mb-0 fw-bold" style="letter-spacing: 1px; font-family: monospace;">
-                                AI VISION SCANNER</h6>
-                        </div>
-                        <div id="scan-logs" class="text-white-50 mt-2"
-                            style="font-family: monospace; font-size: 13px; line-height: 1.7;"></div>
-                    </div>
-                </div>
-
                 <div class="mb-3 animate-entry delay-3">
                     <label class="form-label text-white fw-bold">Full Name</label>
                     {{ form.name }}
@@ -399,6 +367,7 @@
                         automatically)</small>
                 </div>
 
+                <div class="alert alert-info mb-3 animate-entry delay-6" style="background: rgba(212,175,55,0.1); border: 1px solid #D4AF37; color: #D4AF37;"><strong>Note:</strong> You will be asked to share your Palm Photos directly on WhatsApp after submitting this form.</div>
                 <button type="submit" id="submit-btn" class="btn btn-whatsapp w-100 animate-entry delay-6">
                     <i class="fa-brands fa-whatsapp me-2"></i> Submit to WhatsApp
                 </button>
