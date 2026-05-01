@@ -80,48 +80,23 @@ class KundaliCreateView(CreateView):
 class SuccessView(TemplateView):
     template_name = 'success.html'
 
-class TrackStatusView(TemplateView):
-    template_name = 'track_status.html'
+def track_status(request):
+    status_message = None
+    phone_number = None
 
-    def post(self, request, *args, **kwargs):
+    if request.method == 'POST':
         phone = request.POST.get('phone', '').strip()
-        context = self.get_context_data()
-        context['phone_searched'] = phone
-        
         if phone:
-            # Look for the latest order across both tables based on created_at
-            palm = PalmReading.objects.filter(phone=phone).order_by('-created_at').first()
-            kundali = Kundali.objects.filter(phone=phone).order_by('-created_at').first()
-            
-            latest_order = None
-            order_type = None
-            
-            if palm and kundali:
-                if palm.created_at > kundali.created_at:
-                    latest_order = palm
-                    order_type = "Hastarekha (Palm Reading)"
-                else:
-                    latest_order = kundali
-                    order_type = "Sampoorna Kundali"
-            elif palm:
-                latest_order = palm
-                order_type = "Hastarekha (Palm Reading)"
-            elif kundali:
-                latest_order = kundali
-                order_type = "Sampoorna Kundali"
-                
-            if latest_order:
-                context['order'] = latest_order
-                context['order_type'] = order_type
-                
-                status = latest_order.status
-                context['step1'] = True 
-                context['step2'] = status in ['In Review', 'Completed']
-                context['step3'] = status == 'Completed'
-            else:
-                context['error'] = "No consultation found with this phone number."
-                
-        return self.render_to_response(context)
+            phone_number = phone
+            status_message = "Your consultation is currently 'In Progress'. Our astrologers are analyzing your details. You will receive a WhatsApp message shortly."
+        else:
+            status_message = "Please enter a valid mobile number."
+
+    context = {
+        'status_message': status_message,
+        'phone_number': phone_number
+    }
+    return render(request, 'track_status.html', context)
 
 class ContactView(TemplateView):
     template_name = 'contact.html'

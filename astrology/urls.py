@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import HomeView, ChatView, HastarekhaCreateView, KundaliCreateView, SuccessView, AstroGPTAPIView, ContactView, TrackStatusView
+from .views import HomeView, ChatView, HastarekhaCreateView, KundaliCreateView, SuccessView, AstroGPTAPIView, ContactView
+from . import views
 from .api import PalmReadingAPIView, KundaliAPIView, CheckReportAPIView
 
 urlpatterns = [
@@ -10,7 +11,7 @@ urlpatterns = [
     path('kundali/', KundaliCreateView.as_view(), name='kundali'),
     path('success/', SuccessView.as_view(), name='success'),
     path('contact/', ContactView.as_view(), name='contact'),
-    path('track-status/', TrackStatusView.as_view(), name='track_status'),
+    path('track-status/', views.track_status, name='track_status'),
     
     # API Routes
     path('api/chat/', AstroGPTAPIView.as_view(), name='api_chat'),

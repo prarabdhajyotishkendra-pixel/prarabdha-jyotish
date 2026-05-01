@@ -142,3 +142,14 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SILENCED_SYSTEM_CHECKS = ['admin.E410']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# ==========================================
+# STATIC FILES (Admin Look & WhiteNoise Fix)
+# ==========================================
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# NAYA CODE: 'Manifest' hata diya taaki 500 Error na aaye
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_USE_FINDERS = True
