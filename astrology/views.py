@@ -59,7 +59,7 @@ class HastarekhaCreateView(CreateView):
             
         message = f"*NAMASTE PRARABDHA JYOTISH!* 🕉️\n\nI want a *Palm Reading*.\n\n*CLIENT DETAILS:*\n• Name: {self.object.name}\n• Phone: {self.object.phone}\n• Amount: ₹251\n\n*VIEW HAND PHOTO:*\n\n{image_url}\n\n_System Note: Payment done and Hand Image uploaded successfully._"
         encoded_message = urllib.parse.quote(message)
-        whatsapp_url = f"https://wa.me/918261924972?text={encoded_message}"
+        whatsapp_url = f"https://wa.me/916267357802?text={encoded_message}"
         
         return redirect(whatsapp_url)
 
@@ -73,7 +73,7 @@ class KundaliCreateView(CreateView):
         
         message = f"*NAMASTE PRARABDHA JYOTISH!* 🕉️\n\nI want a *Full Kundali Check*.\n\n*CLIENT DETAILS:*\n• Name: {self.object.name}\n• DOB: {self.object.dob}\n• Time: {self.object.birth_time}\n• Place: {self.object.birth_place}\n• Phone: {self.object.phone}\n• Amount: ₹751\n\n_System Note: Payment done and details saved successfully._"
         encoded_message = urllib.parse.quote(message)
-        whatsapp_url = f"https://wa.me/918261924972?text={encoded_message}"
+        whatsapp_url = f"https://wa.me/916267357802?text={encoded_message}"
         
         return redirect(whatsapp_url)
 

@@ -358,7 +358,7 @@
         document.getElementById('pay-hint').style.display = 'none';
     }
 
-    // --- FIXED WHATSAPP SUBMIT LOGIC ---
+    // --- NATIVE DJANGO WHATSAPP SUBMIT LOGIC ---
     document.getElementById('astro-form').addEventListener('submit', function (event) {
         const selectedPackage = document.querySelector('input[name="package"]:checked');
 
@@ -369,32 +369,8 @@
             return false;
         }
 
-        const name = document.querySelector('[name="name"]')?.value || 'N/A';
-        const dob = document.querySelector('[name="dob"]')?.value || 'N/A';
-        const time = document.querySelector('[name="birth_time"]')?.value || 'N/A';
-        const place = document.querySelector('[name="birth_place"]')?.value || 'N/A';
-        const phone = document.querySelector('[name="phone"]')?.value || 'N/A';
-
-        const amount = selectedPackage.value;
-        const serviceName = selectedPackage.getAttribute('data-name');
-
-        const message = `Namaste Prarabdha Jyotish 🙏\n\n*Full Kundali Request*\nName: ${name}\nDOB: ${dob}\nTime: ${time}\nPlace: ${place}\nPhone: ${phone}\nPackage: ${serviceName}\nAmount: ₹${amount}\n\nPayment completed.\nPlease confirm.`;
-
-        event.preventDefault(); // Stop form submission temporarily
-
-        // 1. Open WhatsApp immediately (Sync action avoids popup blocker)
-        const whatsappUrl = 'https://wa.me/916267357802?text=' + encodeURIComponent(message);
-        window.open(whatsappUrl, '_blank');
-
-        // 2. Show the success popup
+        // Show the success popup while Django natively handles form submission
         document.getElementById('success-popup').style.display = 'flex';
-
-        // 3. Submit the actual form to save data to Django backend
-        setTimeout(() => {
-            if (document.getElementById('astro-form')) {
-                HTMLFormElement.prototype.submit.call(document.getElementById('astro-form'));
-            }
-        }, 1500);
     });
 
     // --- GOLDEN CURSOR EFFECT ---

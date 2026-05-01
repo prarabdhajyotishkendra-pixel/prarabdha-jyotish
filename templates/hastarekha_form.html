@@ -462,7 +462,7 @@
         document.getElementById('step2').classList.add('active');
     }
 
-    // FIXED SUBMIT LOGIC TO BYPASS POPUP BLOCKER
+    // FIXED SUBMIT LOGIC TO NATIVE DJANGO BACKEND REDIRECT
     document.getElementById('astro-form').addEventListener('submit', function (event) {
         const selectedPackage = document.querySelector('input[name="package"]:checked');
         if (!selectedPackage || selectedPackage.value !== "251") {
@@ -470,23 +470,9 @@
             event.preventDefault(); return false;
         }
         document.getElementById('step3').classList.add('active');
-        const name = document.querySelector('[name="name"]')?.value || 'N/A';
-        const phone = document.querySelector('[name="phone"]')?.value || 'N/A';
-        const message = `Namaste Prarabdha Jyotish 🙏\n\nName: ${name}\nPhone: ${phone}\nPackage: Basic Palm Reading\nAmount: ₹251\n\nPayment completed.\nPlease confirm.`;
 
-        event.preventDefault(); // Stop default form submit temporarily
-
-        // 1. Open WhatsApp immediately (Sync action avoids popup blocker)
-        const whatsappUrl = 'https://wa.me/916267357802?text=' + encodeURIComponent(message);
-        window.open(whatsappUrl, '_blank');
-
-        // 2. Show the success popup
+        // Show the success popup while Django natively handles the form submission
         document.getElementById('success-popup').style.display = 'flex';
-
-        // 3. Submit the actual form to save the image to Django backend
-        setTimeout(() => {
-            HTMLFormElement.prototype.submit.call(document.getElementById('astro-form'));
-        }, 1500);
     });
 
     // GOLDEN CURSOR EFFECT

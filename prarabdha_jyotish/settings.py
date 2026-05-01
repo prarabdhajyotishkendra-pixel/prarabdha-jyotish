@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'prarabdha_jyotish.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),
-        conn_max_age=600,
+        conn_max_age=0,
         ssl_require=True
     )
 }
@@ -138,6 +138,7 @@ EMAIL_HOST_PASSWORD = 'tnzy omdr fqxs teii'
 # Django 5.x Fixes
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/admin/' # Admin login ke baad redirect fix
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SILENCED_SYSTEM_CHECKS = ['admin.E410']
