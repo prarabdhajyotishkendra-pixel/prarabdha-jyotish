@@ -305,6 +305,17 @@
                         <!-- Official Manual Payment Section -->
                         <div id="manual-payment-section" class="mt-4" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid rgba(212,175,55,0.4);">
                             <p class="mb-2 text-white fw-bold text-start"><i class="fa-solid fa-building-columns text-gold me-2"></i> Official Alternative (100% Success):</p>
+                            
+                            <!-- Bilingual Note -->
+                            <div class="alert alert-warning mb-3 p-3 text-start shadow-sm rounded" style="background: rgba(212, 175, 55, 0.15); border: 1px solid #D4AF37; border-left: 4px solid #D4AF37;">
+                                <p class="mb-2 text-white" style="font-size: 0.9rem;">
+                                    <i class="fa-solid fa-circle-info text-gold me-1"></i> <strong>Note:</strong> If you face any security issues while paying via the app, please download the QR code or copy the UPI ID to complete your payment manually.
+                                </p>
+                                <p class="mb-0 text-white-50" style="font-size: 0.85rem;">
+                                    <i class="fa-solid fa-language text-gold me-1"></i> <strong>नोट:</strong> यदि ऐप के माध्यम से भुगतान करते समय कोई सुरक्षा समस्या आती है, तो कृपया भुगतान पूरा करने के लिए क्यूआर कोड डाउनलोड करें या यूपीआई आईडी कॉपी करें।
+                                </p>
+                            </div>
+
                             <div class="d-flex align-items-center justify-content-between p-2 rounded mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
                                 <span class="text-warning fw-bold d-flex align-items-center" style="letter-spacing: 1px;" id="upi-id-text">
                                     {{ upi_id|default:"6267357802@ybl" }} <i class="fa-solid fa-circle-check text-success ms-2 fs-6" title="Verified Merchant"></i>
@@ -318,7 +329,10 @@
                             {% if qr_code %}
                             <div id="qr-container" style="background: white; padding: 15px; border-radius: 10px; margin: 15px auto; border: 2px solid #D4AF37; box-shadow: 0 4px 15px rgba(212,175,55,0.2); text-align: center;">
                                 <img src="data:image/png;base64,{{ qr_code }}" alt="Payment QR" class="img-fluid" id="qr-image" style="max-width: 200px; display: inline-block;">
-                                <p class="text-dark small mt-2 fw-bold">Scan to pay exactly ₹<span id="qr-amount">501</span></p>
+                                <p class="text-dark small mt-2 fw-bold mb-2">Scan to pay exactly ₹<span id="qr-amount">501</span></p>
+                                <button type="button" class="btn btn-sm btn-dark w-100 fw-bold" onclick="downloadQR()">
+                                    <i class="fa-solid fa-download"></i> Download QR Code
+                                </button>
                             </div>
                             {% endif %}
                         </div>
@@ -360,6 +374,18 @@
         navigator.clipboard.writeText("6267357802@ybl").then(() => {
             alert('UPI ID copied to clipboard: 6267357802@ybl');
         });
+    }
+
+    function downloadQR() {
+        const img = document.getElementById('qr-image');
+        if (img) {
+            const a = document.createElement('a');
+            a.href = img.src;
+            a.download = 'Prarabdha_Jyotish_Payment_QR.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
     }
 
     function triggerPaymentFlow(app, btnElement) {
