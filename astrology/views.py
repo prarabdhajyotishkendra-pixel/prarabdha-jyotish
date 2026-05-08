@@ -60,7 +60,7 @@ class HastarekhaCreateView(CreateView):
         name = "Shraddha Tiwari"
         amount = "251"
         tr = uuid.uuid4().hex[:12].upper()
-        intent_url = f"upi://pay?pa={upi_id}&pn={urllib.parse.quote(name)}&am={amount}&cu=INR&mc=0000&tr={tr}&tn=AstrologyService"
+        intent_url = f"upi://pay?pa={upi_id}&pn={urllib.parse.quote(name)}&am={amount}&cu=INR&tn=Astrology&tr={tr}"
         
         qr = qrcode.QRCode(version=1, box_size=10, border=4)
         qr.add_data(intent_url)
@@ -100,7 +100,7 @@ class KundaliCreateView(CreateView):
         name = "Shraddha Tiwari"
         amount = "751"
         tr = uuid.uuid4().hex[:12].upper()
-        intent_url = f"upi://pay?pa={upi_id}&pn={urllib.parse.quote(name)}&am={amount}&cu=INR&mc=0000&tr={tr}&tn=AstrologyService"
+        intent_url = f"upi://pay?pa={upi_id}&pn={urllib.parse.quote(name)}&am={amount}&cu=INR&tn=Astrology&tr={tr}"
         
         qr = qrcode.QRCode(version=1, box_size=10, border=4)
         qr.add_data(intent_url)
