@@ -472,22 +472,49 @@
         const payBtn = document.getElementById('pay-btn');
         const originalText = payBtn.innerHTML;
         
-        // Human-Trigger Logic: Show Processing Spinner
-        payBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Processing...';
+        // Human-Trigger Logic: Show Securing Connection Spinner
+        payBtn.innerHTML = '<i class="fa-solid fa-shield-halved fa-beat-fade me-2"></i> Securing Connection...';
         payBtn.disabled = true;
 
-        const tr = Math.random().toString(36).substring(2, 15);
         const upiId = "6267357802@ybl";
         const payeeName = "Shraddha Tiwari";
         const amount = "251";
-        const finalUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=AstrologyService&tr=${tr}`;
+        const finalUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
         
         setTimeout(() => {
             payBtn.innerHTML = originalText;
             payBtn.disabled = false;
             
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                window.location.href = finalUrl;
+                // Hidden Anchor Trick
+                const a = document.createElement('a');
+                a.href = finalUrl;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                // 5-second failure fallback
+                setTimeout(() => {
+                    const section = document.getElementById('manual-payment-section');
+                    const qrContainer = document.getElementById('qr-container');
+                    
+                    if (section && section.classList.contains('d-none')) {
+                        section.classList.remove('d-none');
+                    }
+                    if (qrContainer && qrContainer.classList.contains('d-none')) {
+                        qrContainer.classList.remove('d-none');
+                    }
+                    
+                    if (qrContainer) {
+                        qrContainer.style.transition = "box-shadow 0.5s ease-in-out";
+                        qrContainer.style.boxShadow = "0 0 25px rgba(212,175,55,0.8)";
+                        setTimeout(() => {
+                            qrContainer.style.boxShadow = "0 4px 15px rgba(212,175,55,0.2)";
+                        }, 2000);
+                    }
+                }, 5000);
+
             } else {
                 alert("Desktop Detected! 🖥️\n\nPlease use the Manual Payment Options below to scan the QR code.");
                 document.getElementById('manual-payment-section').classList.remove('d-none');
@@ -495,7 +522,7 @@
                 if (qrContainer) qrContainer.classList.remove('d-none');
             }
             document.getElementById('step2').classList.add('active');
-        }, 800);
+        }, 1000);
     }
 
     // FIXED SUBMIT LOGIC TO NATIVE DJANGO BACKEND REDIRECT
