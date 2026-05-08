@@ -9,3 +9,4 @@ media/
 *.log
 
 .vercel
+.env*.local
