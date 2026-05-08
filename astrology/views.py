@@ -13,6 +13,10 @@ import google.generativeai as genai
 from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth import logout
+import qrcode
+import base64
+from io import BytesIO
+import uuid
 
 def admin_logout_view(request):
     logout(request)
@@ -50,6 +54,28 @@ class HastarekhaCreateView(CreateView):
     form_class = PalmReadingForm
     template_name = 'hastarekha_form.html'
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        upi_id = "6267357802@ybl"
+        name = "Shraddha Tiwari"
+        amount = "251"
+        tr = uuid.uuid4().hex[:12].upper()
+        intent_url = f"upi://pay?pa={upi_id}&pn={urllib.parse.quote(name)}&am={amount}&cu=INR&mc=0000&tr={tr}&tn=AstrologyService"
+        
+        qr = qrcode.QRCode(version=1, box_size=10, border=4)
+        qr.add_data(intent_url)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+        qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        
+        context['qr_code'] = qr_base64
+        context['intent_url'] = intent_url
+        context['upi_id'] = upi_id
+        return context
+    
     def form_valid(self, form):
         self.object = form.save()
         
@@ -67,6 +93,28 @@ class KundaliCreateView(CreateView):
     model = Kundali
     form_class = KundaliForm
     template_name = 'kundali_form.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        upi_id = "6267357802@ybl"
+        name = "Shraddha Tiwari"
+        amount = "751"
+        tr = uuid.uuid4().hex[:12].upper()
+        intent_url = f"upi://pay?pa={upi_id}&pn={urllib.parse.quote(name)}&am={amount}&cu=INR&mc=0000&tr={tr}&tn=AstrologyService"
+        
+        qr = qrcode.QRCode(version=1, box_size=10, border=4)
+        qr.add_data(intent_url)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+        qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        
+        context['qr_code'] = qr_base64
+        context['intent_url'] = intent_url
+        context['upi_id'] = upi_id
+        return context
     
     def form_valid(self, form):
         self.object = form.save()
