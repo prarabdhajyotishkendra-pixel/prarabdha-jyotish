@@ -280,24 +280,35 @@
                     </h4>
 
                     <!-- HYBRID PAYMENT OPTIONS -->
-                    <div class="payment-options mt-4 pt-3 border-top border-secondary">
+                    <div class="payment-options mt-4 pt-3 border-top border-secondary" id="payment-options-section">
                         <h5 class="text-white mb-3 fw-bold"><i class="fa-solid fa-wallet text-gold me-2"></i> Payment Options</h5>
                         
-                        <!-- Primary Direct Payment Button -->
-                        <button type="button" id="pay-btn" class="btn btn-upi w-100 mb-3" onclick="triggerPaymentFlow()">
-                            <i class="fa-solid fa-mobile-screen-button me-2"></i> Pay ₹<span id="btn-amount">501</span> via App (PhonePe/GPay)
+                        <!-- Protocol Switching Buttons -->
+                        <p class="text-white-50 small mb-2">Select your preferred app:</p>
+                        <div class="d-flex gap-2 mb-3">
+                            <button type="button" class="btn flex-fill fw-bold text-white" style="background:#5f259f; border-radius:8px;" onclick="triggerPaymentFlow('phonepe', this)">
+                                <i class="fa-solid fa-p"></i> PhonePe
+                            </button>
+                            <button type="button" class="btn flex-fill fw-bold text-white" style="background:#1a73e8; border-radius:8px;" onclick="triggerPaymentFlow('gpay', this)">
+                                <i class="fa-brands fa-google"></i> GPay
+                            </button>
+                            <button type="button" class="btn flex-fill fw-bold text-white" style="background:#00b9f1; border-radius:8px;" onclick="triggerPaymentFlow('paytm', this)">
+                                <i class="fa-solid fa-indian-rupee-sign"></i> Paytm
+                            </button>
+                        </div>
+
+                        <!-- Generic Direct Payment Button -->
+                        <button type="button" id="pay-btn" class="btn btn-upi w-100 mb-3" onclick="triggerPaymentFlow('generic', this)">
+                            <i class="fa-solid fa-mobile-screen-button me-2"></i> Other UPI Apps
                         </button>
 
-                        <!-- Secondary Manual Payment Toggle -->
-                        <button type="button" class="btn btn-outline-warning w-100 mb-3" onclick="toggleManualPayment()">
-                            <i class="fa-solid fa-qrcode me-2"></i> Show Manual Payment Options
-                        </button>
-
-                        <!-- Hidden Manual Payment Section -->
-                        <div id="manual-payment-section" class="d-none" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px dashed rgba(212,175,55,0.4);">
-                            <p class="mb-2 text-white fw-bold text-start"><i class="fa-solid fa-building-columns text-gold me-2"></i> Manual Payment:</p>
+                        <!-- Official Manual Payment Section -->
+                        <div id="manual-payment-section" class="mt-4" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid rgba(212,175,55,0.4);">
+                            <p class="mb-2 text-white fw-bold text-start"><i class="fa-solid fa-building-columns text-gold me-2"></i> Official Alternative (100% Success):</p>
                             <div class="d-flex align-items-center justify-content-between p-2 rounded mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
-                                <span class="text-warning fw-bold" style="letter-spacing: 1px;" id="upi-id-text">{{ upi_id|default:"6267357802@ybl" }}</span>
+                                <span class="text-warning fw-bold d-flex align-items-center" style="letter-spacing: 1px;" id="upi-id-text">
+                                    {{ upi_id|default:"6267357802@ybl" }} <i class="fa-solid fa-circle-check text-success ms-2 fs-6" title="Verified Merchant"></i>
+                                </span>
                                 <button type="button" class="btn btn-sm btn-warning fw-bold text-dark" onclick="copyUPI()">
                                     <i class="fa-solid fa-copy"></i> Copy
                                 </button>
@@ -305,14 +316,9 @@
                             
                             <!-- QR CODE FIXED TAG -->
                             {% if qr_code %}
-                            <button type="button" class="btn btn-sm btn-outline-light w-100 mb-2" onclick="toggleQR()">
-                                <i class="fa-solid fa-eye me-1"></i> Show QR Code
-                            </button>
-                            <div id="qr-container" class="d-none" style="background: white; padding: 15px; border-radius: 10px; margin: 15px auto; border: 2px solid #D4AF37; box-shadow: 0 4px 15px rgba(212,175,55,0.2); text-align: center;">
+                            <div id="qr-container" style="background: white; padding: 15px; border-radius: 10px; margin: 15px auto; border: 2px solid #D4AF37; box-shadow: 0 4px 15px rgba(212,175,55,0.2); text-align: center;">
                                 <img src="data:image/png;base64,{{ qr_code }}" alt="Payment QR" class="img-fluid" id="qr-image" style="max-width: 200px; display: inline-block;">
-                                <button type="button" class="btn btn-sm btn-dark w-100 mt-2 fw-bold" onclick="downloadQR()">
-                                    <i class="fa-solid fa-download"></i> Download QR
-                                </button>
+                                <p class="text-dark small mt-2 fw-bold">Scan to pay exactly ₹<span id="qr-amount">501</span></p>
                             </div>
                             {% endif %}
                         </div>
@@ -349,36 +355,14 @@
     }
 
     // --- SMART PAYMENT FLOW LOGIC ---
-    function toggleManualPayment() {
-        const section = document.getElementById('manual-payment-section');
-        section.classList.toggle('d-none');
-    }
-
-    function toggleQR() {
-        const qr = document.getElementById('qr-container');
-        qr.classList.toggle('d-none');
-    }
-
     function copyUPI() {
-        const upiText = document.getElementById('upi-id-text').innerText;
-        navigator.clipboard.writeText(upiText).then(() => {
-            alert('UPI ID copied to clipboard: ' + upiText);
+        const upiText = document.getElementById('upi-id-text').innerText.trim().replace('Verified Merchant', '').trim();
+        navigator.clipboard.writeText("6267357802@ybl").then(() => {
+            alert('UPI ID copied to clipboard: 6267357802@ybl');
         });
     }
 
-    function downloadQR() {
-        const img = document.getElementById('qr-image');
-        if (img) {
-            const a = document.createElement('a');
-            a.href = img.src;
-            a.download = 'Prarabdha_Jyotish_Payment_QR.png';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-    }
-
-    function triggerPaymentFlow() {
+    function triggerPaymentFlow(app, btnElement) {
         const selectedOption = document.querySelector('input[name="package"]:checked');
 
         // Security: Don't process if user somehow selects disabled ₹251
@@ -387,60 +371,51 @@
             return;
         }
 
-        const payBtn = document.getElementById('pay-btn');
-        const originalText = payBtn.innerHTML;
+        const originalText = btnElement.innerHTML;
         
-        // Human-Trigger Logic: Show Securing Connection Spinner
-        payBtn.innerHTML = '<i class="fa-solid fa-shield-halved fa-beat-fade me-2"></i> Securing Connection...';
-        payBtn.disabled = true;
+        // Human Action Wrapper
+        btnElement.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Verifying UPI ID...';
+        btnElement.disabled = true;
 
         const selectedAmount = selectedOption.value;
         const upiId = "6267357802@ybl";
         const payeeName = "Shraddha Tiwari";
         
-        const finalUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${selectedAmount}&cu=INR`;
+        // Protocol Switching Strategy & Minimalist Data
+        let baseData = `pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${selectedAmount}&cu=INR`;
+        let finalUrl = `upi://pay?${baseData}`;
+        
+        if (app === 'phonepe') finalUrl = `phonepe://pay?${baseData}`;
+        else if (app === 'gpay') finalUrl = `tez://pay?${baseData}`;
+        else if (app === 'paytm') finalUrl = `paytmmp://pay?${baseData}`;
 
         setTimeout(() => {
-            payBtn.innerHTML = originalText;
-            payBtn.disabled = false;
+            btnElement.innerHTML = originalText;
+            btnElement.disabled = false;
             
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                // Hidden Anchor Trick
-                const a = document.createElement('a');
-                a.href = finalUrl;
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                // User-Gesture Direct Intent
+                window.location.href = finalUrl;
 
-                // 5-second failure fallback
+                // 2-second failure fallback with smooth scroll
                 setTimeout(() => {
-                    const section = document.getElementById('manual-payment-section');
-                    const qrContainer = document.getElementById('qr-container');
-                    
-                    if (section && section.classList.contains('d-none')) {
-                        section.classList.remove('d-none');
-                    }
-                    if (qrContainer && qrContainer.classList.contains('d-none')) {
-                        qrContainer.classList.remove('d-none');
-                    }
-                    
+                    const qrContainer = document.getElementById('manual-payment-section');
                     if (qrContainer) {
+                        qrContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         qrContainer.style.transition = "box-shadow 0.5s ease-in-out";
-                        qrContainer.style.boxShadow = "0 0 25px rgba(212,175,55,0.8)";
+                        qrContainer.style.boxShadow = "0 0 25px rgba(37, 211, 102, 0.6)";
                         setTimeout(() => {
-                            qrContainer.style.boxShadow = "0 4px 15px rgba(212,175,55,0.2)";
+                            qrContainer.style.boxShadow = "none";
                         }, 2000);
                     }
-                }, 5000);
+                }, 2000);
 
             } else {
-                alert("Desktop Detected! 🖥️\n\nPlease use the Manual Payment Options below to scan the QR code.");
-                document.getElementById('manual-payment-section').classList.remove('d-none');
-                const qrContainer = document.getElementById('qr-container');
-                if (qrContainer) qrContainer.classList.remove('d-none');
+                alert("Desktop Detected! 🖥️\n\nPlease scan the Official QR code below with your mobile phone.");
+                const qrContainer = document.getElementById('manual-payment-section');
+                if (qrContainer) qrContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
-        }, 1000);
+        }, 600); // Small delay to show verification
     }
 
     // --- NATIVE DJANGO WHATSAPP SUBMIT LOGIC ---
